@@ -437,16 +437,11 @@ export const VolunteersSection: React.FC = () => {
 
               {/* Cabecera de la Tarjeta */}
               <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-5 relative z-10">
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-3">
                   <img
                     src={CAMPAIGN_INFO.images.logo}
                     alt="Logo JP"
-                    className="w-10 h-10 rounded-full border border-yellow-400 bg-white p-0.5 object-contain"
-                  />
-                  <img
-                    src={CAMPAIGN_INFO.party.gifSello}
-                    alt="Sello Animado Bandera Ibagué"
-                    className="w-11 h-11 rounded-full border-2 border-yellow-400 bg-white object-contain shadow-md"
+                    className="w-11 h-11 rounded-full border border-yellow-400 bg-white p-0.5 object-contain"
                   />
                   <div>
                     <p className="text-[10px] font-extrabold uppercase tracking-widest text-yellow-400">
