@@ -2,19 +2,16 @@ import os
 import re
 import math
 import xml.etree.ElementTree as ET
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont
 
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SVG_PATH = os.path.join(ROOT_DIR, "public", "images", "caballo-liberal.svg")
 GIF_DIR = os.path.join(ROOT_DIR, "material_campana_redes", "gifs_animados")
 os.makedirs(GIF_DIR, exist_ok=True)
 
 
-def parse_svg_path_to_subpaths(d_str, steps_per_curve=28):
-    """
-    Parse an SVG path string ('M x y L x y C x1 y1, x2 y2, x3 y3 Z')
-    into a list of closed polygon point lists [(x, y), ...].
-    """
+def parse_svg_path_to_subpaths(d_str, steps_per_curve=24):
+    """Parse SVG path d-attribute into closed polygon point lists."""
     token_re = re.compile(r"([MLCZmlcz])|(-?\d+(?:\.\d+)?)")
     tokens = token_re.findall(d_str)
 
@@ -74,15 +71,15 @@ def parse_svg_path_to_subpaths(d_str, steps_per_curve=28):
 
 
 def pdf_to_svg_coords(x, y):
-    """Apply the SVG group transform: translate(-59.9631, 800.825) scale(1, -1)"""
     return (x - 59.9631, 800.825 - y)
 
 
-def render_layers(scale=2):
+def render_base_layers(scale=1.5):
     """
-    Render two separate high-res RGBA layers from the vector paths:
-    1. body_and_pole_layer: The horse, rider, hat, and flagpole (all paths except Path 1).
-    2. flag_cloth_layer: Only Path 1 (the red flag cloth attached to the pole).
+    Render the vector paths into:
+    1. body_raw: Full horse, rider, and flagpole (without the flag cloth).
+    2. flag_red_img: Red flag cloth (Partido Liberal).
+    3. flag_tricolor_img: Ibagué Tricolor flag cloth (Amarillo, Verde, Rojo).
     """
     W, H = int(472 * scale), int(793 * scale)
     tree = ET.parse(SVG_PATH)
@@ -92,8 +89,8 @@ def render_layers(scale=2):
     body_img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     body_draw = ImageDraw.Draw(body_img)
 
-    flag_img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    flag_draw = ImageDraw.Draw(flag_img)
+    flag_mask = Image.new("L", (W, H), 0)
+    flag_mask_draw = ImageDraw.Draw(flag_mask)
 
     for idx, p in enumerate(paths):
         d_str = p.attrib.get("d", "")
@@ -111,198 +108,363 @@ def render_layers(scale=2):
                 pts.append((sx * scale, sy * scale))
 
             if idx == 1:
-                # Path 1 is the Flag Cloth!
-                flag_draw.polygon(pts, fill=(225, 26, 36, 255))
+                flag_mask_draw.polygon(pts, fill=255)
             else:
                 if is_white:
-                    # Cutout inner negative space
                     body_draw.polygon(pts, fill=(0, 0, 0, 0))
                 else:
                     body_draw.polygon(pts, fill=col)
 
-    return body_img, flag_img, scale
+    # Create Red Flag Cloth and Ibagué Tricolor Flag Cloth (Amarillo, Verde, Rojo)
+    flag_red_img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    flag_tricolor_img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+
+    f_red_px = flag_red_img.load()
+    f_tri_px = flag_tricolor_img.load()
+    mask_px = flag_mask.load()
+
+    # Flagpole attachment points P1=(160.46, 10.28), P2=(250.98, 81.48)
+    p1x, p1y = 160.46 * scale, 10.28 * scale
+    p2x, p2y = 250.98 * scale, 81.48 * scale
+    dx_p = p2x - p1x
+    dy_p = p2y - p1y
+    pole_len = math.hypot(dx_p, dy_p)
+    ux, uy = dx_p / pole_len, dy_p / pole_len
+
+    max_x = min(W, int(335 * scale))
+    max_y = min(H, int(265 * scale))
+
+    for y in range(max_y):
+        for x in range(max_x):
+            m = mask_px[x, y]
+            if m > 0:
+                f_red_px[x, y] = (225, 26, 36, m)
+
+                # Project onto flagpole axis to divide into 3 horizontal flag stripes:
+                # Top stripe: Yellow (#FFD600), Middle stripe: Green (#1B8A38), Bottom stripe: Red (#D32F2F)
+                vx = x - p1x
+                vy = y - p1y
+                s_along = (vx * ux + vy * uy) / pole_len
+                if s_along < 0.34:
+                    # Amarillo vibrante de Ibagué
+                    f_tri_px[x, y] = (255, 208, 0, m)
+                elif s_along < 0.67:
+                    # Verde territorial de Ibagué
+                    f_tri_px[x, y] = (32, 145, 52, m)
+                else:
+                    # Rojo institucional de Ibagué
+                    f_tri_px[x, y] = (220, 26, 36, m)
+
+    return body_img, flag_red_img, flag_tricolor_img, scale
+
+
+def split_body_into_skeletal_parts(body_img, scale):
+    """
+    Separate the horse body into:
+    - torso_img: Rider, horse torso, head, and flagpole (above leg joints)
+    - tail_img: Horse tail (X < 180, 375 < Y < 495)
+    - leg_hind_img: Left hind leg (Y >= 500, X < 236)
+    - leg_mid_img: Center legs (Y >= 510, 236 <= X < 332)
+    - leg_front_img: Front raised leg (Y >= 490, X >= 332)
+    """
+    W, H = body_img.size
+    src = body_img.load()
+
+    torso_img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    tail_img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    leg_hind_img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    leg_mid_img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    leg_front_img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+
+    p_torso = torso_img.load()
+    p_tail = tail_img.load()
+    p_hind = leg_hind_img.load()
+    p_mid = leg_mid_img.load()
+    p_front = leg_front_img.load()
+
+    for y in range(H):
+        sy = y / float(scale)
+        for x in range(W):
+            c = src[x, y]
+            if c[3] == 0:
+                continue
+            sx = x / float(scale)
+
+            # 1. Check Tail region
+            if sx < 176 and 375 <= sy <= 492:
+                p_tail[x, y] = c
+                if sx > 164:
+                    p_torso[x, y] = c  # overlap at tail root
+                continue
+
+            # 2. Check Hind Leg (leftmost leg)
+            if sy >= 500 and sx < 236:
+                p_hind[x, y] = c
+                if sy <= 525:
+                    p_torso[x, y] = c  # overlap at hip joint
+                continue
+
+            # 3. Check Center Legs
+            if sy >= 512 and 236 <= sx < 332:
+                p_mid[x, y] = c
+                if sy <= 536:
+                    p_torso[x, y] = c  # overlap at hip/stifle joint
+                continue
+
+            # 4. Check Front Right Leg
+            if sy >= 492 and sx >= 332:
+                p_front[x, y] = c
+                if sy <= 518:
+                    p_torso[x, y] = c  # overlap at shoulder joint
+                continue
+
+            # Otherwise belongs to Torso/Rider/Head
+            p_torso[x, y] = c
+
+    return torso_img, tail_img, leg_hind_img, leg_mid_img, leg_front_img
+
+
+def articulate_limb(limb_img, pivot_xy, knee_y, angle_upper_deg, angle_lower_deg, blend_top_y, scale):
+    """
+    2-segment skeletal limb deformation (Upper thigh/arm + Lower shin/hoof)
+    with smooth skinning near the hip/shoulder joint so it never disconnects!
+    """
+    W, H = limb_img.size
+    out = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    src = limb_img.load()
+    dst = out.load()
+
+    px, py = pivot_xy[0] * scale, pivot_xy[1] * scale
+    ky = knee_y * scale
+    by = blend_top_y * scale
+
+    rad_upper = math.radians(angle_upper_deg)
+    rad_lower = math.radians(angle_lower_deg)
+
+    # Forward position of the knee after upper rotation
+    k_dx = 0.0
+    k_dy = ky - py
+    cos_u = math.cos(rad_upper)
+    sin_u = math.sin(rad_upper)
+    knee_curr_x = px + (k_dx * cos_u - k_dy * sin_u)
+    knee_curr_y = py + (k_dx * sin_u + k_dy * cos_u)
+
+    y_start = max(0, int(by - 20 * scale))
+    for y in range(y_start, H):
+        for x in range(W):
+            # Determine effective rotation angle via inverse kinematics mapping
+            if y <= ky:
+                # Smooth blend weight from 0 at blend_top_y to 1 at py + 18*scale
+                w = min(1.0, max(0.0, (y - by) / float(22.0 * scale)))
+                ang = rad_upper * w
+                ca = math.cos(-ang)
+                sa = math.sin(-ang)
+                dx = x - px
+                dy = y - py
+                sx = int(round(px + dx * ca - dy * sa))
+                sy = int(round(py + dx * sa + dy * ca))
+            else:
+                # Below the knee: first undo lower leg flexion around moving knee, then undo upper rotation
+                w_knee = min(1.0, max(0.0, (y - ky) / float(25.0 * scale)))
+                ang_low = rad_lower * w_knee
+                cl = math.cos(-ang_low)
+                sl = math.sin(-ang_low)
+                dx_k = x - knee_curr_x
+                dy_k = y - knee_curr_y
+                # Point in upper-rotated frame
+                ux_p = knee_curr_x + dx_k * cl - dy_k * sl
+                uy_p = knee_curr_y + dx_k * sl + dy_k * cl
+                # Undo upper rotation around hip pivot
+                ca = math.cos(-rad_upper)
+                sa = math.sin(-rad_upper)
+                dx = ux_p - px
+                dy = uy_p - py
+                sx = int(round(px + dx * ca - dy * sa))
+                sy = int(round(py + dx * sa + dy * ca))
+
+            if 0 <= sx < W and 0 <= sy < H:
+                c = src[sx, sy]
+                if c[3] > 0:
+                    dst[x, y] = c
+
+    return out
 
 
 def deform_flag_cloth_frame(flag_img, scale, phase):
     """
     Deform ONLY the flag cloth pixels with a realistic travelling 2D cloth wave
     anchored along the flagpole line, plus 3D fabric fold highlights & shadows!
+    Works for both the Red Flag and the Ibagué Tricolor Flag!
     """
     W, H = flag_img.size
     out = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     src_px = flag_img.load()
     dst_px = out.load()
 
-    # Flagpole anchor line in SVG coords:
-    # P1 = (160.46, 10.28), P2 = (250.98, 81.48)
     p1x, p1y = 160.46 * scale, 10.28 * scale
     p2x, p2y = 250.98 * scale, 81.48 * scale
 
-    # Unit vector along the pole (u) and perpendicular away from the pole into the flag (n)
     dx_pole = p2x - p1x
     dy_pole = p2y - p1y
     pole_len = math.hypot(dx_pole, dy_pole)
     ux, uy = dx_pole / pole_len, dy_pole / pole_len
-    # Perpendicular vector pointing down-left toward the flying tip of the flag
     nx, ny = -uy, ux
     if nx > 0:
         nx, ny = -nx, -ny
 
-    # Bounding box of flag cloth in SVG coords is roughly x in [0..330*scale], y in [0..260*scale]
     max_x = min(W, int(335 * scale))
     max_y = min(H, int(265 * scale))
     max_dist = 185.0 * scale
 
     for y in range(max_y):
         for x in range(max_x):
-            # Vector from P1 to (x, y)
             vx = x - p1x
             vy = y - p1y
-            # Distance perpendicular to flagpole (how far out on the cloth we are)
             dist = vx * nx + vy * ny
-            if dist <= 0:
-                dist_norm = 0.0
-            else:
-                dist_norm = min(1.5, dist / max_dist)
+            dist_norm = 0.0 if dist <= 0 else min(1.5, dist / max_dist)
 
-            # Travelling wave along the flag cloth (propagating from pole to free tip)
-            # Zero at dist=0 so the cloth remains 100% attached to the flagpole!
             envelope = (dist_norm ** 1.15)
             wave_arg1 = dist_norm * 7.2 - phase
             wave_arg2 = dist_norm * 13.5 - phase * 2.0 + (vx * ux + vy * uy) / (45.0 * scale)
 
             disp = envelope * (
-                13.5 * scale * math.sin(wave_arg1) +
-                4.2 * scale * math.cos(wave_arg2)
+                14.5 * scale * math.sin(wave_arg1) +
+                4.5 * scale * math.cos(wave_arg2)
             )
-            # Secondary flutter along the perpendicular axis
-            disp_along = envelope * (4.5 * scale * math.sin(wave_arg1 + 1.2))
+            disp_along = envelope * (4.8 * scale * math.sin(wave_arg1 + 1.2))
 
-            # Inverse map to source pixel
             sx = int(round(x - disp * ux - disp_along * nx))
             sy = int(round(y - disp * uy - disp_along * ny))
 
             if 0 <= sx < W and 0 <= sy < H:
                 r, g, b, a = src_px[sx, sy]
                 if a > 0:
-                    # 3D Fabric shading from wave slope (derivative of sin is cos)
                     slope = envelope * (
                         0.85 * math.cos(wave_arg1) -
                         0.35 * math.sin(wave_arg2)
                     )
-                    # Modulate red brightness and depth to simulate billowing cloth folds
                     light = int(slope * 48)
-                    nr = max(135, min(255, r + light))
-                    ng = max(8, min(95, g + max(0, int(light * 0.45))))
-                    nb = max(12, min(95, b + max(0, int(light * 0.45))))
+                    nr = max(15, min(255, r + light))
+                    ng = max(10, min(255, g + light))
+                    nb = max(10, min(255, b + light))
                     dst_px[x, y] = (nr, ng, nb, a)
 
     return out
 
 
-def update_svg_with_animated_flag():
+def compose_galloping_horse_frame(
+    torso_img, tail_img, leg_hind_img, leg_mid_img, leg_front_img,
+    flag_layer_img, scale, phase
+):
     """
-    Also inject a native 60fps SVG <animate> wave into public/images/caballo-liberal.svg
-    so the flag waves continuously inside the React app too!
+    Assemble one complete frame of the galloping horse:
+    1. Articulate the 3 leg groups in a vigorous gallop stride (upper + knee bend).
+    2. Articulate the whipping tail.
+    3. Wave the flag cloth with 3D folds.
+    4. Apply natural galloping body pitch & bounce.
     """
-    with open(SVG_PATH, "r", encoding="utf-8") as f:
-        svg_text = f.read()
+    W, H = torso_img.size
+    frame = Image.new("RGBA", (W, H), (0, 0, 0, 0))
 
-    # Original Path 1 (the flag cloth):
-    orig_flag_d = "M 69.9631 660.596 L 163.269 581.411 C 212.385 581.158, 280.259 642.999, 310.94 719.349 L 220.421 790.546 C 195.876 741.402, 156.843 681.593, 69.9631 660.596 Z"
-
-    # Build 9 smooth keyframe d strings where the pole attachment (310.94, 719.349) and (220.421, 790.546)
-    # remain fixed, while the control points and flying tips billow in a travelling wave!
-    keyframes = []
-    num_kf = 8
-    for k in range(num_kf + 1):
-        ph = (k / float(num_kf)) * 2.0 * math.pi
-        # Flying tips (69.96, 660.60) and (163.27, 581.41) wave with phase lag
-        tip1_x = 69.9631 + 9.0 * math.sin(ph - 1.4)
-        tip1_y = 660.596 + 16.0 * math.cos(ph - 1.4)
-
-        tip2_x = 163.269 + 10.0 * math.sin(ph - 1.7)
-        tip2_y = 581.411 + 17.0 * math.cos(ph - 1.7)
-
-        # Mid control points billow with intermediate phase
-        c1_x = 212.385 + 7.0 * math.sin(ph - 0.9)
-        c1_y = 581.158 + 15.0 * math.cos(ph - 0.9)
-
-        c2_x = 280.259 + 4.0 * math.sin(ph - 0.4)
-        c2_y = 642.999 + 10.0 * math.cos(ph - 0.4)
-
-        c3_x = 195.876 + 5.0 * math.sin(ph - 0.4)
-        c3_y = 741.402 + 11.0 * math.cos(ph - 0.4)
-
-        c4_x = 156.843 + 8.0 * math.sin(ph - 1.0)
-        c4_y = 681.593 + 16.0 * math.cos(ph - 1.0)
-
-        kf_d = (
-            f"M {tip1_x:.2f} {tip1_y:.2f} "
-            f"L {tip2_x:.2f} {tip2_y:.2f} "
-            f"C {c1_x:.2f} {c1_y:.2f}, {c2_x:.2f} {c2_y:.2f}, 310.94 719.349 "
-            f"L 220.421 790.546 "
-            f"C {c3_x:.2f} {c3_y:.2f}, {c4_x:.2f} {c4_y:.2f}, {tip1_x:.2f} {tip1_y:.2f} Z"
-        )
-        keyframes.append(kf_d)
-
-    values_str = ";".join(keyframes)
-    animated_path = (
-        f'<path d="{orig_flag_d}" fill="rgb(255,0,0)">'
-        f'<animate attributeName="d" values="{values_str}" dur="1.15s" repeatCount="indefinite" />'
-        f'</path>'
+    # 1. Hind Leg (Pata trasera izquierda): strong propulsion swing + hock bend
+    ang_hind_upper = 17.0 * math.sin(phase)
+    ang_hind_knee = -22.0 * max(0.0, math.sin(phase - 0.7))
+    hind_anim = articulate_limb(
+        leg_hind_img, pivot_xy=(196, 515), knee_y=625,
+        angle_upper_deg=ang_hind_upper, angle_lower_deg=ang_hind_knee,
+        blend_top_y=502, scale=scale
     )
 
-    target_tag = f'<path d="{orig_flag_d}" fill="rgb(255,0,0)" />'
-    if target_tag in svg_text:
-        new_svg = svg_text.replace(target_tag, animated_path, 1)
-        with open(SVG_PATH, "w", encoding="utf-8") as f:
-            f.write(new_svg)
-        print("Updated public/images/caballo-liberal.svg with native 60fps waving flag animation!")
-    else:
-        print("Note: SVG already has animated flag or modified tag.")
+    # 2. Mid Legs (Patas centrales): counter-phase stride so legs scissor visibly!
+    ang_mid_upper = -16.0 * math.sin(phase + 0.35)
+    ang_mid_knee = -20.0 * max(0.0, -math.sin(phase - 0.3))
+    mid_anim = articulate_limb(
+        leg_mid_img, pivot_xy=(272, 525), knee_y=635,
+        angle_upper_deg=ang_mid_upper, angle_lower_deg=ang_mid_knee,
+        blend_top_y=514, scale=scale
+    )
+
+    # 3. Front Right Leg (Pata delantera levantada): reaches forward and bends knee
+    ang_front_upper = -19.0 * math.sin(phase - 0.85)
+    ang_front_knee = 25.0 * max(0.0, math.sin(phase + 0.5))
+    front_anim = articulate_limb(
+        leg_front_img, pivot_xy=(358, 505), knee_y=605,
+        angle_upper_deg=ang_front_upper, angle_lower_deg=ang_front_knee,
+        blend_top_y=494, scale=scale
+    )
+
+    # 4. Tail (Cola): whips with the gallop rhythm
+    ang_tail = 14.0 * math.sin(phase - 1.1)
+    tail_anim = articulate_limb(
+        tail_img, pivot_xy=(174, 412), knee_y=455,
+        angle_upper_deg=ang_tail, angle_lower_deg=ang_tail * 0.6,
+        blend_top_y=380, scale=scale
+    )
+
+    # 5. Waving Flag Cloth
+    waved_flag = deform_flag_cloth_frame(flag_layer_img, scale, phase)
+
+    # Composite limbs + torso + waving flag
+    frame.alpha_composite(waved_flag)
+    frame.alpha_composite(tail_anim)
+    frame.alpha_composite(hind_anim)
+    frame.alpha_composite(mid_anim)
+    frame.alpha_composite(front_anim)
+    frame.alpha_composite(torso_img)
+
+    # Whole-horse gallop rocking pitch (+-2.6 deg) and vertical suspension bounce (+-6px)
+    pitch_deg = 2.6 * math.cos(phase)
+    bounce_dy = int(6.0 * scale * math.sin(phase))
+    rocked = frame.rotate(pitch_deg, resample=Image.BICUBIC, center=(265 * scale, 470 * scale))
+
+    padded = Image.new("RGBA", (W + 40, H + 40), (0, 0, 0, 0))
+    padded.alpha_composite(rocked, (20, 20 + bounce_dy))
+    return padded
 
 
 def generate_gifs():
-    print("Rendering vector layers of the Liberal Horseman & Flag...")
-    body_img, flag_img, scale = render_layers(scale=1.5)
-    W, H = body_img.size
+    print("Rendering skeletal layers & flags (Partido Liberal Red & Ibagué Tricolor)...")
+    body_img, flag_red_img, flag_tricolor_img, scale = render_base_layers(scale=1.35)
+    torso_img, tail_img, leg_hind_img, leg_mid_img, leg_front_img = split_body_into_skeletal_parts(body_img, scale)
 
-    num_frames = 20
+    num_frames = 18
     frames_transparent = []
     frames_dark_card = []
-    frames_white_badge = []
+    frames_white_badge_tricolor = []
+
+    out_w, out_h = 400, 660
 
     for i in range(num_frames):
         phase = (i / float(num_frames)) * 2.0 * math.pi
 
-        # Deform the flag cloth with 3D travelling wave
-        waved_flag = deform_flag_cloth_frame(flag_img, scale, phase)
+        # Render horse galloping with RED flag (for Transparent & Dark Card)
+        gallop_red = compose_galloping_horse_frame(
+            torso_img, tail_img, leg_hind_img, leg_mid_img, leg_front_img,
+            flag_red_img, scale, phase
+        ).resize((out_w, out_h), Image.LANCZOS)
 
-        # Combine body + waving flag
-        combined = Image.new("RGBA", (W + 40, H + 40), (0, 0, 0, 0))
-        # Subtle breathing poise on the horse (2px vertical)
-        horse_dy = int(2.5 * math.sin(phase))
-        combined.alpha_composite(waved_flag, (20, 20 + horse_dy))
-        combined.alpha_composite(body_img, (20, 20 + horse_dy))
+        # Render horse galloping with IBAGUÉ TRICOLOR FLAG (Amarillo, Verde, Rojo) for the Circular Seal!
+        gallop_tricolor = compose_galloping_horse_frame(
+            torso_img, tail_img, leg_hind_img, leg_mid_img, leg_front_img,
+            flag_tricolor_img, scale, phase
+        ).resize((out_w, out_h), Image.LANCZOS)
 
-        # Downsample cleanly for crisp anti-aliased GIF (400 x 660)
-        out_w, out_h = 400, 660
-        smooth_rgba = combined.resize((out_w, out_h), Image.LANCZOS)
-
-        # 1. Transparent GIF frame (using alpha threshold palette)
-        alpha = smooth_rgba.getchannel("A")
-        rgb_for_trans = Image.new("RGB", smooth_rgba.size, (255, 255, 255))
-        rgb_for_trans.paste(smooth_rgba, mask=alpha)
+        # ---------------------------------------------------------------------
+        # GIF 1: Transparent Background (Galloping + Waving Flag)
+        # ---------------------------------------------------------------------
+        alpha = gallop_red.getchannel("A")
+        rgb_for_trans = Image.new("RGB", gallop_red.size, (255, 255, 255))
+        rgb_for_trans.paste(gallop_red, mask=alpha)
         p_frame = rgb_for_trans.convert("P", palette=Image.ADAPTIVE, colors=255)
         mask = Image.eval(alpha, lambda a: 255 if a <= 128 else 0)
         p_frame.paste(255, mask)
         frames_transparent.append(p_frame)
 
-        # 2. Dark Campaign Poster GIF frame (with glowing aura + "JOHN POLO • PARTIDO LIBERAL")
+        # ---------------------------------------------------------------------
+        # GIF 2: Dark Campaign Poster GIF (Galloping + Waving Flag)
+        # ---------------------------------------------------------------------
         dark_bg = Image.new("RGBA", (540, 780), (11, 15, 25, 255))
         d_draw = ImageDraw.Draw(dark_bg)
-        # Tricolor top and bottom bars
         w3 = 540 // 3
         d_draw.rectangle([0, 0, w3, 12], fill=(255, 214, 0, 255))
         d_draw.rectangle([w3, 0, 2 * w3, 12], fill=(46, 125, 50, 255))
@@ -311,14 +473,12 @@ def generate_gifs():
         d_draw.rectangle([w3, 768, 2 * w3, 780], fill=(46, 125, 50, 255))
         d_draw.rectangle([2 * w3, 768, 540, 780], fill=(211, 47, 47, 255))
 
-        # Glowing red circle aura
         aura_r = int(195 + 10 * math.sin(phase))
         aura_layer = Image.new("RGBA", (540, 780), (0, 0, 0, 0))
         ad = ImageDraw.Draw(aura_layer)
         ad.ellipse([270 - aura_r, 340 - aura_r, 270 + aura_r, 340 + aura_r], fill=(211, 47, 47, 45), outline=(251, 192, 45, 110), width=2)
         dark_bg.alpha_composite(aura_layer)
-
-        dark_bg.alpha_composite(smooth_rgba, ((540 - out_w) // 2, 25))
+        dark_bg.alpha_composite(gallop_red, ((540 - out_w) // 2, 25))
 
         try:
             f_b = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 28)
@@ -331,64 +491,53 @@ def generate_gifs():
         d_draw.text((270, 738), "PARTIDO LIBERAL • IBAGUÉ SUENA MÁS FUERTE", font=f_s, fill=(255, 214, 0), anchor="mm")
         frames_dark_card.append(dark_bg.convert("RGB").quantize(colors=256))
 
-        # 3. Clean White Circular Emblem GIF (like a live animated logo sticker!)
-        white_bg = Image.new("RGBA", (500, 500), (255, 255, 255, 255))
+        # ---------------------------------------------------------------------
+        # GIF 3: Circular Seal with IBAGUÉ TRICOLOR FLAG (Amarillo, Verde, Rojo)
+        # ---------------------------------------------------------------------
+        white_bg = Image.new("RGBA", (520, 520), (255, 255, 255, 255))
         w_draw = ImageDraw.Draw(white_bg)
-        w_draw.ellipse([16, 16, 484, 484], fill=(255, 250, 250, 255), outline=(211, 47, 47, 255), width=8)
-        w_draw.ellipse([28, 28, 472, 472], outline=(251, 192, 45, 255), width=3)
-        emblem_horse = smooth_rgba.resize((250, 412), Image.LANCZOS)
-        white_bg.alpha_composite(emblem_horse, ((500 - 250) // 2, 36))
-        frames_white_badge.append(white_bg.convert("RGB").quantize(colors=256))
+
+        # Tricolor concentric seal rings (Amarillo, Verde, Rojo) + inner white medallion
+        w_draw.ellipse([12, 12, 508, 508], fill=(255, 252, 248, 255), outline=(211, 47, 47, 255), width=8)
+        w_draw.ellipse([22, 22, 498, 498], outline=(32, 145, 52, 255), width=5)
+        w_draw.ellipse([30, 30, 490, 490], outline=(255, 208, 0, 255), width=5)
+
+        emblem_horse = gallop_tricolor.resize((260, 428), Image.LANCZOS)
+        white_bg.alpha_composite(emblem_horse, ((520 - 260) // 2, 42))
+        frames_white_badge_tricolor.append(white_bg.convert("RGB").quantize(colors=256))
 
     # Save GIF 1: Transparent Background
     gif1_path = os.path.join(GIF_DIR, "caballo_liberal_bandera_transparente.gif")
     frames_transparent[0].save(
-        gif1_path,
-        save_all=True,
-        append_images=frames_transparent[1:],
-        duration=55,
-        loop=0,
-        transparency=255,
-        disposal=2
+        gif1_path, save_all=True, append_images=frames_transparent[1:],
+        duration=55, loop=0, transparency=255, disposal=2
     )
     print("Saved:", gif1_path)
 
-    # Also copy transparent GIF to public/images/caballo-liberal-animado.gif for direct web app use
+    # Save to public/images/caballo-liberal-animado.gif for the web app
     pub_gif_path = os.path.join(ROOT_DIR, "public", "images", "caballo-liberal-animado.gif")
     frames_transparent[0].save(
-        pub_gif_path,
-        save_all=True,
-        append_images=frames_transparent[1:],
-        duration=55,
-        loop=0,
-        transparency=255,
-        disposal=2
+        pub_gif_path, save_all=True, append_images=frames_transparent[1:],
+        duration=55, loop=0, transparency=255, disposal=2
     )
     print("Saved:", pub_gif_path)
 
-    # Save GIF 2: Dark Campaign Card GIF (for WhatsApp / Instagram / Facebook)
+    # Save GIF 2: Dark Campaign Card
     gif2_path = os.path.join(GIF_DIR, "caballo_liberal_john_polo_card.gif")
     frames_dark_card[0].save(
-        gif2_path,
-        save_all=True,
-        append_images=frames_dark_card[1:],
-        duration=55,
-        loop=0
+        gif2_path, save_all=True, append_images=frames_dark_card[1:],
+        duration=55, loop=0
     )
     print("Saved:", gif2_path)
 
-    # Save GIF 3: Circular Emblem Sticker GIF
+    # Save GIF 3: Circular Seal with Ibagué Tricolor Flag (Amarillo, Verde, Rojo)
     gif3_path = os.path.join(GIF_DIR, "caballo_liberal_sello_circular.gif")
-    frames_white_badge[0].save(
-        gif3_path,
-        save_all=True,
-        append_images=frames_white_badge[1:],
-        duration=55,
-        loop=0
+    frames_white_badge_tricolor[0].save(
+        gif3_path, save_all=True, append_images=frames_white_badge_tricolor[1:],
+        duration=55, loop=0
     )
     print("Saved:", gif3_path)
 
 
 if __name__ == "__main__":
     generate_gifs()
-    update_svg_with_animated_flag()
