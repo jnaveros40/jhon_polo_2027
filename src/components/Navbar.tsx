@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, MessageCircle, Download, Check } from 'lucide-react';
+import { Menu, X, MessageCircle, Download, Check, FileText } from 'lucide-react';
 import { CAMPAIGN_INFO, buildWhatsAppUrl } from '../data/campaignData';
 import { usePWA } from '../hooks/usePWA';
 import { CaballoLiberal } from './CaballoLiberal';
@@ -10,10 +10,10 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Inicio', href: '#inicio' },
-    { name: 'Propuestas 2027', href: '#propuestas' },
-    { name: 'Buzón Comunas', href: '#buzon' },
+    { name: '7 Ejes 2027-2030', href: '#propuestas' },
+    { name: 'Matriz & 80-10-10', href: '#matriz-estrategica' },
+    { name: 'Buzón Territorial', href: '#buzon' },
     { name: 'Voluntarios', href: '#voluntarios' },
-    { name: 'Orgullo Ibagué', href: '#ibague' },
   ];
 
   const handleLinkClick = () => {
@@ -21,7 +21,7 @@ export const Navbar: React.FC = () => {
   };
 
   const whatsAppGeneralLink = buildWhatsAppUrl(
-    `¡Hola John Polo! Vi tu plataforma oficial para el Concejo de Ibagué 2027 y quiero sumarme a que Ibagué suene más fuerte.`
+    `¡Hola John Fredy Polo! Vi tu plataforma oficial "Ibagué Sostenible, Industrial, Segura y Conectada" para el Concejo 2027-2030 y quiero sumarme.`
   );
 
   return (
@@ -38,10 +38,9 @@ export const Navbar: React.FC = () => {
               <div className="relative">
                 <img
                   src={CAMPAIGN_INFO.images.logo}
-                  alt="Logo John Polo Concejo de Ibagué 2027"
+                  alt="Logo John Fredy Polo Campos Concejo de Ibagué 2027-2030"
                   className="w-12 h-12 md:w-14 md:h-14 object-contain rounded-full border-2 border-red-600 shadow-sm group-hover:scale-105 transition-transform"
                   onError={(e) => {
-                    // Fallback visual si la imagen tarda en cargar
                     const target = e.currentTarget;
                     target.style.display = 'none';
                     const parent = target.parentElement;
@@ -65,13 +64,13 @@ export const Navbar: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex items-center gap-1 mt-0.5">
-                  <span className="text-[11px] font-semibold text-slate-600 uppercase tracking-wider">
-                    Concejo de Ibagué
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-slate-600 uppercase tracking-wider">
+                    Concejo Ibagué
                   </span>
                   <span className="bg-red-100 text-red-700 text-[10px] font-bold px-1.5 py-0.2 rounded-full border border-red-200">
-                    2027
+                    2027–2030
                   </span>
-                  <span className="hidden sm:inline-flex items-center gap-1 bg-red-700 text-white text-[10px] font-black px-1.5 py-0.2 rounded-full ml-1 shadow-xs">
+                  <span className="hidden sm:inline-flex items-center gap-1 bg-red-700 text-white text-[10px] font-black px-1.5 py-0.2 rounded-full ml-0.5 shadow-xs">
                     Liberal
                   </span>
                 </div>
@@ -84,17 +83,16 @@ export const Navbar: React.FC = () => {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-red-700 hover:bg-red-50/80 transition-all"
+                  className="px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold text-slate-700 hover:text-red-700 hover:bg-red-50/80 transition-all"
                 >
                   {link.name}
                 </a>
               ))}
             </nav>
 
-            {/* Desktop Actions (PWA + WhatsApp + Partido Liberal) */}
-            <div className="hidden sm:flex items-center gap-3">
-              {/* Sello Partido Liberal */}
-              <div 
+            {/* Desktop Actions (PDF + PWA + WhatsApp + Partido Liberal) */}
+            <div className="hidden sm:flex items-center gap-2.5">
+              <div
                 className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 bg-red-50/80 rounded-xl border border-red-200 shadow-xs cursor-pointer hover:bg-red-100 transition-colors"
                 title="Aval Oficial: Partido Liberal Colombiano"
               >
@@ -103,7 +101,18 @@ export const Navbar: React.FC = () => {
                   Partido Liberal
                 </span>
               </div>
-              {/* Botón PWA si no está instalada */}
+
+              <a
+                href={CAMPAIGN_INFO.masterDocPdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition-all"
+                title="Ver Documento Maestro Concejo 2027-2030 (PDF)"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>PDF 2027-2030</span>
+              </a>
+
               {!isInstalled && (
                 <button
                   onClick={installPwa}
@@ -111,23 +120,22 @@ export const Navbar: React.FC = () => {
                   title="Instalar como aplicación en tu dispositivo"
                 >
                   <Download className="w-3.5 h-3.5 text-red-600 animate-bounce" />
-                  <span>Instalar App</span>
+                  <span>App</span>
                 </button>
               )}
 
               {isInstalled && (
                 <span className="flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-200">
                   <Check className="w-3.5 h-3.5" />
-                  App Instalada
+                  Instalada
                 </span>
               )}
 
-              {/* Botón WhatsApp */}
               <a
                 href={whatsAppGeneralLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm hover:shadow transition-all group"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm hover:shadow transition-all group"
               >
                 <MessageCircle className="w-4 h-4 fill-current group-hover:scale-110 transition-transform" />
                 <span>Escríbele a John</span>
@@ -143,7 +151,6 @@ export const Navbar: React.FC = () => {
                   aria-label="Instalar App"
                 >
                   <Download className="w-4 h-4 text-red-600" />
-                  <span className="hidden xs:inline">App</span>
                 </button>
               )}
 
@@ -165,11 +172,11 @@ export const Navbar: React.FC = () => {
             <div className="px-4 pt-3 pb-6 space-y-2">
               <div className="p-3 bg-red-50 rounded-xl border border-red-100 mb-3 flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-bold text-red-900">Ibagué merece sonar más fuerte</p>
-                  <p className="text-[11px] text-red-700">Concejo de Ibagué 2027</p>
+                  <p className="text-xs font-bold text-red-900">{CAMPAIGN_INFO.candidateFullName}</p>
+                  <p className="text-[11px] text-red-700">{CAMPAIGN_INFO.campaignTitle} • {CAMPAIGN_INFO.programName}</p>
                 </div>
-                <span className="inline-flex items-center text-xs font-bold bg-yellow-400 text-slate-900 px-2 py-0.5 rounded-full">
-                  #EsHoraDeCreer
+                <span className="inline-flex items-center text-[10px] font-bold bg-yellow-400 text-slate-900 px-2 py-0.5 rounded-full shrink-0">
+                  7 Ejes
                 </span>
               </div>
 
@@ -187,6 +194,17 @@ export const Navbar: React.FC = () => {
 
               <div className="pt-3 border-t border-slate-100 flex flex-col gap-2.5">
                 <a
+                  href={CAMPAIGN_INFO.masterDocPdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm text-red-700 bg-red-50 border border-red-200"
+                  onClick={handleLinkClick}
+                >
+                  <FileText className="w-4 h-4" />
+                  <span>Descargar Documento Maestro 2027-2030 (PDF)</span>
+                </a>
+
+                <a
                   href={whatsAppGeneralLink}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -196,19 +214,6 @@ export const Navbar: React.FC = () => {
                   <MessageCircle className="w-5 h-5 fill-current" />
                   <span>Chatea directo por WhatsApp</span>
                 </a>
-
-                {!isInstalled && (
-                  <button
-                    onClick={() => {
-                      installPwa();
-                      setIsOpen(false);
-                    }}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300"
-                  >
-                    <Download className="w-4 h-4 text-red-600" />
-                    <span>Instalar App en el Celular (Gratis)</span>
-                  </button>
-                )}
               </div>
             </div>
           </div>

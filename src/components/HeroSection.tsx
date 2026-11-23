@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Users, Sparkles, CheckCircle2, MessageCircle, MapPin, Flame, Eye } from 'lucide-react';
+import { ArrowRight, Users, Sparkles, CheckCircle2, MessageCircle, MapPin, Flame, Eye, FileText } from 'lucide-react';
 import { CAMPAIGN_INFO, buildWhatsAppUrl } from '../data/campaignData';
 import { CaballoLiberal } from './CaballoLiberal';
 
@@ -7,7 +7,7 @@ export const HeroSection: React.FC = () => {
   const [photoVariant, setPhotoVariant] = useState<'creer' | 'territorio'>('creer');
 
   const whatsAppHeroLink = buildWhatsAppUrl(
-    `¡Hola John Polo! Quiero sumarme a tu campaña al Concejo de Ibagué 2027 y apoyar tus propuestas por una Ibagué que produce, recibe y crece.`
+    `¡Hola John Fredy Polo! Leí tu Documento Maestro 2027-2030 ("Ibagué Sostenible, Industrial, Segura y Conectada") y quiero sumarme a tu equipo.`
   );
 
   return (
@@ -29,11 +29,11 @@ export const HeroSection: React.FC = () => {
             <div className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wide bg-red-700 text-white shadow-sm">
                 <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
-                Concejo de Ibagué 2027
+                {CAMPAIGN_INFO.campaignTitle}
               </span>
 
               {/* Badge Oficial del Partido Liberal con Caballo Animado */}
-              <div 
+              <div
                 className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-white text-red-700 border-2 border-red-600/50 shadow-xs hover:border-red-600 hover:bg-red-50 transition-all cursor-pointer group"
                 title="Candidatura oficial respaldada por el Partido Liberal Colombiano"
               >
@@ -43,79 +43,87 @@ export const HeroSection: React.FC = () => {
 
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
                 <MapPin className="w-3.5 h-3.5 text-emerald-700" />
-                13 Comunas & Corregimientos
+                13 Comunas • 17 Corregimientos • 144 Veredas
               </span>
 
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
                 <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                #EsHoraDeCreer
+                Esquema 80-10-10
               </span>
             </div>
 
             {/* Identidad Gráfica Oficial de Campaña: Ibagué merece sonar más fuerte */}
             <div className="space-y-2">
               <div className="relative group max-w-xl mx-auto lg:mx-0">
-                {/* Resplandor con colores de la bandera de Ibagué */}
                 <div className="absolute -inset-1.5 rounded-3xl flag-gradient opacity-60 blur-xs group-hover:opacity-90 transition-opacity" />
 
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white bg-slate-900">
                   <img
                     src={CAMPAIGN_INFO.images.bannerLandscape}
-                    alt="Ibagué merece sonar más fuerte - John Polo Concejo de Ibagué 2027"
+                    alt="Ibagué merece sonar más fuerte - John Fredy Polo Campos Concejo de Ibagué 2027-2030"
                     className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-500"
                     loading="eager"
                   />
-                  {/* Badge de Verificación de Identidad */}
                   <div className="absolute top-2.5 right-2.5 bg-slate-950/85 backdrop-blur-md text-yellow-400 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-yellow-400/40 shadow-sm flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    John Polo - Concejo 2027
+                    CONCEJO 2027 – 2030
                   </div>
                 </div>
 
-                {/* H1 SEO Accesible para motores de búsqueda y lectores de pantalla */}
                 <h1 className="sr-only">
-                  Ibagué merece sonar más fuerte - John Polo al Concejo de Ibagué 2027
+                  {CAMPAIGN_INFO.candidateFullName} - {CAMPAIGN_INFO.sloganPrimary} - {CAMPAIGN_INFO.programName}
                 </h1>
               </div>
             </div>
 
-            {/* Manifiesto y Subtítulo */}
-            <p className="text-lg sm:text-xl text-slate-600 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              Una ciudad con voz, oportunidades y futuro. Por una Ibagué que produce, recibe con calidez y crece con empleo digno para sus jóvenes.
-            </p>
+            {/* Manifiesto y Subtítulo del Documento Maestro */}
+            <div className="space-y-2 max-w-2xl mx-auto lg:mx-0">
+              <p className="text-xs sm:text-sm font-display font-black uppercase tracking-wider text-red-700">
+                {CAMPAIGN_INFO.candidateFullName} • «{CAMPAIGN_INFO.programName}»
+              </p>
+              <p className="text-base sm:text-lg text-slate-700 font-medium leading-relaxed">
+                Plataforma programática con <strong className="text-slate-900">7 Ejes Estratégicos</strong> fundamentados en Max-Neef, Amartya Sen y Mariana Mazzucato: gobernanza agrologística en la Calle 19, renovación de 30 km/año de redes del IBAL sin cartel de valvuleros, INFIBAGUÉ 75/25 como Banca Juvenil, Plaza 28 Modelo Concordia, Viaducto Mirolindo, SETP con 2 Cables Aéreos y Seguridad Cívica.
+              </p>
+            </div>
 
-            {/* Micro-puntos de valor */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 max-w-xl mx-auto lg:mx-0">
-              <div className="flex items-center gap-2 p-2 rounded-xl bg-white/80 border border-slate-200 shadow-xs">
-                <CheckCircle2 className="w-5 h-5 text-red-600 shrink-0" />
-                <span className="text-xs font-bold text-slate-800">Primer Empleo Joven</span>
+            {/* Micro-puntos de valor del Documento Maestro */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 max-w-2xl mx-auto lg:mx-0 text-left">
+              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/90 border border-slate-200 shadow-xs">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="text-xs font-bold text-slate-800">Acopio Calle 19 (Ex-Carrefour) & 50 km/año Vías Rurales</span>
               </div>
-              <div className="flex items-center gap-2 p-2 rounded-xl bg-white/80 border border-slate-200 shadow-xs">
-                <CheckCircle2 className="w-5 h-5 text-amber-600 shrink-0" />
-                <span className="text-xs font-bold text-slate-800">Cultura & Turismo Vivo</span>
+              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/90 border border-slate-200 shadow-xs">
+                <CheckCircle2 className="w-4 h-4 text-red-600 shrink-0" />
+                <span className="text-xs font-bold text-slate-800">30 km/año Redes IBAL & Fin del 'Cartel Valvuleros'</span>
               </div>
-              <div className="flex items-center gap-2 p-2 rounded-xl bg-white/80 border border-slate-200 shadow-xs">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-                <span className="text-xs font-bold text-slate-800">Control Férreo al Agua</span>
+              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/90 border border-slate-200 shadow-xs">
+                <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0" />
+                <span className="text-xs font-bold text-slate-800">INFIBAGUÉ 75/25 Banca Juvenil + Plaza 28 Concordia</span>
+              </div>
+              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/90 border border-slate-200 shadow-xs">
+                <CheckCircle2 className="w-4 h-4 text-red-700 shrink-0" />
+                <span className="text-xs font-bold text-slate-800">Av. Cra 13, Cll 103, Puente Mirolindo, SETP y 2 Cables</span>
               </div>
             </div>
 
             {/* Llamados a la Acción (CTAs) */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-3">
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
               <a
                 href="#propuestas"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-display font-extrabold text-base text-white bg-red-700 hover:bg-red-800 shadow-brand hover:shadow-lg transition-all active:scale-[0.98]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-display font-extrabold text-sm sm:text-base text-white bg-red-700 hover:bg-red-800 shadow-brand hover:shadow-lg transition-all active:scale-[0.98]"
               >
-                <span>Conoce las Propuestas</span>
+                <span>Ver los 7 Ejes Estratégicos</span>
                 <ArrowRight className="w-5 h-5" />
               </a>
 
               <a
-                href="#voluntarios"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-display font-bold text-base text-slate-800 bg-white hover:bg-slate-100 border-2 border-slate-300 shadow-sm transition-all active:scale-[0.98]"
+                href={CAMPAIGN_INFO.masterDocPdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-4 rounded-xl font-display font-bold text-sm text-slate-800 bg-white hover:bg-slate-100 border-2 border-slate-300 shadow-sm transition-all active:scale-[0.98]"
               >
-                <Users className="w-5 h-5 text-red-600" />
-                <span>Súmate al Equipo</span>
+                <FileText className="w-4 h-4 text-red-600" />
+                <span>PDF Proyecto 2027-2030</span>
               </a>
 
               <a
@@ -130,16 +138,10 @@ export const HeroSection: React.FC = () => {
               </a>
             </div>
 
-            {/* Métrica de impacto ciudadano */}
-            <div className="pt-2 flex items-center justify-center lg:justify-start gap-4 text-xs text-slate-500 font-medium">
-              <div className="flex -space-x-2">
-                <span className="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-red-600 text-white font-bold text-[10px] flex items-center justify-center">JP</span>
-                <span className="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-yellow-500 text-slate-900 font-bold text-[10px] flex items-center justify-center">IB</span>
-                <span className="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-emerald-600 text-white font-bold text-[10px] flex items-center justify-center">27</span>
-              </div>
-              <p>
-                <strong className="text-slate-800 font-bold">Cientos de ciudadanos</strong> ya sumados en las 13 comunas.
-              </p>
+            {/* Lema Maestro de Cierre */}
+            <div className="pt-1 flex items-center justify-center lg:justify-start gap-3 text-xs text-slate-600 font-semibold italic">
+              <span className="inline-block w-2 h-2 rounded-full bg-red-600 shrink-0" />
+              <span>“{CAMPAIGN_INFO.closingMasterQuote}”</span>
             </div>
 
           </div>
@@ -162,10 +164,11 @@ export const HeroSection: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setPhotoVariant('creer')}
-                      className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 ${photoVariant === 'creer'
-                        ? 'bg-red-700 text-white shadow-xs'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                        }`}
+                      className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 ${
+                        photoVariant === 'creer'
+                          ? 'bg-red-700 text-white shadow-xs'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      }`}
                     >
                       <Eye className="w-3 h-3" />
                       <span>Es Hora de Creer</span>
@@ -173,10 +176,11 @@ export const HeroSection: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setPhotoVariant('territorio')}
-                      className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 ${photoVariant === 'territorio'
-                        ? 'bg-red-700 text-white shadow-xs'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                        }`}
+                      className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 ${
+                        photoVariant === 'territorio'
+                          ? 'bg-red-700 text-white shadow-xs'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      }`}
                     >
                       <Eye className="w-3 h-3" />
                       <span>En Territorio</span>
@@ -188,25 +192,23 @@ export const HeroSection: React.FC = () => {
                 <div className="relative rounded-xl overflow-hidden bg-slate-900 aspect-[4/5] group">
                   <img
                     src={photoVariant === 'creer' ? CAMPAIGN_INFO.images.actionCandidate : CAMPAIGN_INFO.images.heroCandidate}
-                    alt="John Polo - Candidato al Concejo de Ibagué 2027"
+                    alt="John Fredy Polo Campos - Concejo de Ibagué 2027-2030"
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                     loading="eager"
                   />
 
-                  {/* Gradiente inferior para legibilidad */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                  {/* Badges Flotantes sobre la Imagen */}
                   <div className="absolute top-3 left-3 bg-red-700/90 backdrop-blur-md text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-lg border border-red-500">
-                    JOHN POLO AL CONCEJO
+                    JOHN FREDY POLO • CONCEJO
                   </div>
 
                   <div className="absolute top-3 right-3 bg-yellow-400 text-slate-950 text-xs font-black px-2.5 py-1 rounded-full shadow-lg">
-                    2027
+                    2027–2030
                   </div>
 
                   {/* Badge Flotante del Partido Liberal con Caballo Animado */}
-                  <div 
+                  <div
                     className="absolute top-12 right-3 z-10 bg-white/95 backdrop-blur-md px-2 py-1 rounded-xl shadow-lg border border-red-500/40 flex items-center gap-1 group cursor-pointer hover:scale-105 transition-transform"
                     title="Candidatura avalada por el Partido Liberal Colombiano"
                   >
@@ -218,11 +220,13 @@ export const HeroSection: React.FC = () => {
 
                   {/* Resumen inferior sobre la imagen */}
                   <div className="absolute bottom-3 left-3 right-3 p-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-white/60 shadow-lg text-slate-900">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <div>
-                        <p className="text-xs uppercase font-bold text-red-700 tracking-wider">Liderazgo & Compromiso</p>
-                        <p className="text-base font-display font-extrabold text-slate-900">
-                          "Por una Ibagué que produce, recibe y crece"
+                        <p className="text-[11px] uppercase font-bold text-red-700 tracking-wider">
+                          Financiación 80-10-10 • Sin Más Deuda
+                        </p>
+                        <p className="text-sm sm:text-base font-display font-extrabold text-slate-900 leading-snug">
+                          “{CAMPAIGN_INFO.closingMasterQuote}”
                         </p>
                       </div>
                       <span className="p-2 rounded-full bg-red-100 text-red-700 shrink-0">
@@ -233,15 +237,16 @@ export const HeroSection: React.FC = () => {
                 </div>
 
                 {/* Sub-banner institucional */}
-                <div className="mt-3 p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-center">
-                  <p className="text-xs font-bold text-slate-700">
-                    ¿Quieres conocer a John en tu barrio?
-                  </p>
+                <div className="mt-3 p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-center flex items-center justify-between px-3">
+                  <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                    <Users className="w-4 h-4 text-red-600" />
+                    <span>Conoce la obra para tu comuna</span>
+                  </span>
                   <a
                     href="#buzon"
-                    className="text-xs font-extrabold text-red-700 hover:text-red-800 underline inline-block mt-0.5"
+                    className="text-xs font-extrabold text-red-700 hover:text-red-800 underline"
                   >
-                    Invítalo a tu comuna o escribe al buzón ciudadano →
+                    Ir al Buzón Territorial →
                   </a>
                 </div>
 
@@ -256,4 +261,3 @@ export const HeroSection: React.FC = () => {
     </section>
   );
 };
-

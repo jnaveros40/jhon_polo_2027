@@ -4,7 +4,8 @@ import {
   MapPin,
   MessageCircle,
   Instagram,
-  Facebook
+  Facebook,
+  FileText
 } from 'lucide-react';
 import { CAMPAIGN_INFO, buildWhatsAppUrl } from '../data/campaignData';
 import { CaballoLiberal } from './CaballoLiberal';
@@ -25,15 +26,15 @@ export const Footer: React.FC = () => {
             <div className="flex items-center gap-3">
               <img
                 src={CAMPAIGN_INFO.images.logo}
-                alt="Logo JP John Polo"
+                alt="Logo JP John Fredy Polo Campos"
                 className="w-12 h-12 rounded-full border border-yellow-400 bg-white p-0.5 object-contain"
               />
               <div>
-                <span className="font-display font-black text-2xl text-white tracking-tight">
-                  JOHN POLO
+                <span className="font-display font-black text-xl sm:text-2xl text-white tracking-tight block leading-none">
+                  {CAMPAIGN_INFO.candidateFullName.toUpperCase()}
                 </span>
-                <p className="text-xs font-extrabold uppercase text-yellow-400 tracking-wider">
-                  Concejo de Ibagué 2027
+                <p className="text-xs font-extrabold uppercase text-yellow-400 tracking-wider mt-1">
+                  {CAMPAIGN_INFO.campaignTitle}
                 </p>
               </div>
             </div>
@@ -42,15 +43,19 @@ export const Footer: React.FC = () => {
               {CAMPAIGN_INFO.bioSummary}
             </p>
 
-            <div className="pt-2 flex flex-wrap gap-2 text-xs">
+            <p className="text-xs font-display font-bold text-yellow-300 italic">
+              “{CAMPAIGN_INFO.closingMasterQuote}”
+            </p>
+
+            <div className="pt-1 flex flex-wrap gap-2 text-xs">
               <span className="px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-yellow-400 font-bold">
                 #IbaguéSuenaMásFuerte
               </span>
               <span className="px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-emerald-400 font-bold">
-                #EsHoraDeCreer
+                #7EjesEstratégicos
               </span>
               <span className="px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-red-400 font-bold">
-                #13Comunas
+                #Esquema801010
               </span>
             </div>
           </div>
@@ -58,7 +63,7 @@ export const Footer: React.FC = () => {
           {/* Columna 2: Enlaces Rápidos */}
           <div className="lg:col-span-3 space-y-3">
             <h4 className="text-sm font-display font-extrabold uppercase tracking-wider text-white">
-              Navegación Rápida
+              Plataforma 2027 – 2030
             </h4>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-400 font-medium">
               <li>
@@ -68,22 +73,33 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <a href="#propuestas" className="hover:text-yellow-400 transition-colors">
-                  • Las 3 Grandes Apuestas
+                  • Los 7 Ejes Estratégicos
+                </a>
+              </li>
+              <li>
+                <a href="#matriz-estrategica" className="hover:text-yellow-400 transition-colors">
+                  • Matriz de Síntesis Estratégica
+                </a>
+              </li>
+              <li>
+                <a href="#ingenieria-financiera" className="hover:text-yellow-400 transition-colors">
+                  • Ingeniería Financiera 80-10-10
                 </a>
               </li>
               <li>
                 <a href="#buzon" className="hover:text-yellow-400 transition-colors">
-                  • Reporta tu Comuna
+                  • Mapa de 13 Comunas y 144 Veredas
                 </a>
               </li>
               <li>
-                <a href="#voluntarios" className="hover:text-yellow-400 transition-colors">
-                  • Tarjeta Digital de Apoyo
-                </a>
-              </li>
-              <li>
-                <a href="#ibague" className="hover:text-yellow-400 transition-colors">
-                  • Orgullo & Identidad Ibaguereña
+                <a
+                  href={CAMPAIGN_INFO.masterDocPdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-yellow-400 hover:text-yellow-300 font-bold inline-flex items-center gap-1 pt-1"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>Descargar Documento Maestro (PDF)</span>
                 </a>
               </li>
             </ul>
@@ -92,11 +108,11 @@ export const Footer: React.FC = () => {
           {/* Columna 3: Contacto & Redes Oficiales */}
           <div className="lg:col-span-4 space-y-4">
             <h4 className="text-sm font-display font-extrabold uppercase tracking-wider text-white">
-              Conéctate con la Campaña
+              Conéctate con John Fredy Polo
             </h4>
 
             <p className="text-xs text-slate-400">
-              Sigue el recorrido barrio a barrio y participa activamente en nuestras redes oficiales:
+              Sigue el trabajo técnico y territorial en las 13 comunas, 17 corregimientos y 144 veredas:
             </p>
 
             <div className="flex items-center gap-3">
@@ -121,7 +137,7 @@ export const Footer: React.FC = () => {
               </a>
 
               <a
-                href={buildWhatsAppUrl("¡Hola John Polo! Quiero conversar sobre el Concejo de Ibagué 2027.")}
+                href={buildWhatsAppUrl("¡Hola John Fredy Polo! Quiero conversar sobre el Documento Maestro Concejo de Ibagué 2027-2030.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-emerald-400 hover:text-white hover:bg-emerald-600 hover:border-emerald-500 transition-all"
@@ -132,10 +148,10 @@ export const Footer: React.FC = () => {
             </div>
 
             <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs text-slate-400">
-              <span className="block font-bold text-white mb-0.5">Sede & Territorio:</span>
+              <span className="block font-bold text-white mb-0.5">Cobertura Territorial:</span>
               <p className="flex items-center gap-1">
                 <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
-                <span>Ibagué, Tolima - Colombia</span>
+                <span>Ibagué, Tolima (13 Comunas • 17 Corregimientos • 144 Veredas)</span>
               </p>
             </div>
           </div>
@@ -148,13 +164,13 @@ export const Footer: React.FC = () => {
             <CaballoLiberal size="sm" animated={true} />
             <div>
               <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-950 text-red-400 border border-red-800 text-[10px] font-black uppercase tracking-wider mb-1">
-                <span>Aval Oficial</span>
+                <span>Aval Oficial • Partido Liberal Colombiano</span>
               </div>
               <h5 className="text-base sm:text-lg font-display font-black text-white">
-                Partido Liberal Colombiano • John Polo al Concejo 2027
+                {CAMPAIGN_INFO.candidateFullName} • {CAMPAIGN_INFO.campaignTitle}
               </h5>
               <p className="text-xs text-slate-400 mt-0.5 max-w-xl">
-                Liderazgo con vocación social, impulso al primer empleo para los jóvenes y control riguroso a los servicios públicos de Ibagué.
+                Plataforma «{CAMPAIGN_INFO.programName}» — Desarrollo a Escala Humana (Max-Neef), Capacidades (Sen) y Estado Emprendedor (Mazzucato).
               </p>
             </div>
           </div>
@@ -170,17 +186,17 @@ export const Footer: React.FC = () => {
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 text-center md:text-left">
           <div>
             <p className="font-semibold text-slate-400">
-              © 2026 - 2027 Plataforma Oficial John Polo al Concejo de Ibagué.
+              © 2026 - 2030 Plataforma Oficial {CAMPAIGN_INFO.candidateFullName} — Concejo de Ibagué.
             </p>
             <p className="text-[11px] mt-0.5 text-slate-500">
-              Material informativo de precampaña y participación ciudadana rumbo a las Elecciones Regionales 2027.
+              Material informativo y programático de participación ciudadana rumbo al periodo constitucional 2027 – 2030.
             </p>
           </div>
 
           <div className="flex items-center gap-1 text-[11px] text-slate-400">
             <span>Hecho con</span>
             <Heart className="w-3.5 h-3.5 text-red-600 fill-red-600 inline" />
-            <span>por Ibaguereños para Ibagué</span>
+            <span>con rigor técnico y carácter por Ibagué</span>
           </div>
         </div>
 

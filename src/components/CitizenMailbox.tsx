@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Send,
   MapPin,
-  MessageSquare,
   CheckCircle,
   AlertCircle,
   Copy,
@@ -10,9 +9,11 @@ import {
   Sparkles,
   Droplets,
   Briefcase,
-  Music,
+  Utensils,
   Store,
   Compass,
+  ShieldCheck,
+  Building2,
   MessageCircle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -31,7 +32,7 @@ export const CitizenMailbox: React.FC = () => {
     nombre: '',
     telefono: '',
     comunaId: '1',
-    tema: 'Agua y Servicios Públicos',
+    tema: 'Eje 2: Agua, IBAL y Cartel de Valvuleros',
     mensaje: ''
   });
 
@@ -42,22 +43,24 @@ export const CitizenMailbox: React.FC = () => {
   const selectedComuna = COMUNAS_IBAGUE.find(c => String(c.number) === form.comunaId) || COMUNAS_IBAGUE[0];
 
   const TEMAS = [
-    { label: 'Agua y Servicios Públicos', icon: Droplets, color: 'text-blue-600' },
-    { label: 'Empleo Juvenil & Emprendimiento', icon: Briefcase, color: 'text-amber-600' },
-    { label: 'Turismo, Cultura & Folclor', icon: Music, color: 'text-purple-600' },
-    { label: 'Plazas de Mercado & Campesinado', icon: Store, color: 'text-emerald-600' },
-    { label: 'Vías, Huecos & Alumbrado', icon: Compass, color: 'text-red-600' },
-    { label: 'Otro Tema Comunitario', icon: MessageSquare, color: 'text-slate-600' }
+    { label: 'Eje 1: Campo, 144 Veredas, Vías Terciarias y Acopio Cll 19', icon: Store, color: 'text-emerald-600' },
+    { label: 'Eje 2: Agua, IBAL (30 km/año) y Cartel de Valvuleros', icon: Droplets, color: 'text-blue-600' },
+    { label: 'Eje 3: Cargas Urbanísticas, Licencias y Cuenca Combeima', icon: Building2, color: 'text-amber-600' },
+    { label: 'Eje 4: INFIBAGUÉ 75/25, Alumbrado LED y Banca Juvenil', icon: Briefcase, color: 'text-red-600' },
+    { label: 'Eje 5: Plaza 28 (Modelo Concordia) y Biofábrica Municipal', icon: Utensils, color: 'text-purple-600' },
+    { label: 'Eje 6: Movilidad, Puente Mirolindo, SETP y Cable Aéreo', icon: Compass, color: 'text-emerald-700' },
+    { label: 'Eje 7: Seguridad, Plaza 21 (Bronx) y Microtráfico', icon: ShieldCheck, color: 'text-red-700' }
   ];
 
   const formatReportText = () => {
-    return `🏛️ *REPORTE CIUDADANO - JOHN POLO CONCEJO 2027*\n\n` +
+    return `🏛️ *REPORTE TERRITORIAL - JOHN FREDY POLO CONCEJO 2027-2030*\n\n` +
       `👤 *Ciudadano:* ${form.nombre || 'Anónimo'}\n` +
       `📱 *Contacto:* ${form.telefono || 'No especificado'}\n` +
-      `📍 *Ubicación:* ${selectedComuna.name}\n` +
-      `🏷️ *Tema:* ${form.tema}\n\n` +
-      `📝 *Mensaje / Problemática:*\n"${form.mensaje}"\n\n` +
-      `_Enviado desde la plataforma oficial de John Polo - Ibagué merece sonar más fuerte._`;
+      `📍 *Comuna / Corregimiento:* ${selectedComuna.name}\n` +
+      `🏷️ *Eje Programático:* ${form.tema}\n` +
+      `🏗️ *Proyecto Estratégico de Zona:* ${selectedComuna.proyectoEstrategico2027}\n\n` +
+      `📝 *Reporte / Propuesta Ciudadana:*\n"${form.mensaje}"\n\n` +
+      `_Enviado desde la plataforma oficial: Ibagué Sostenible, Industrial, Segura y Conectada._`;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -67,14 +70,13 @@ export const CitizenMailbox: React.FC = () => {
       return;
     }
     if (!form.mensaje.trim() || form.mensaje.trim().length < 10) {
-      setError('Por favor describe tu problemática o idea con al menos 10 caracteres.');
+      setError('Por favor describe tu problemática o propuesta con al menos 10 caracteres.');
       return;
     }
 
     setError(null);
     setSubmitted(true);
 
-    // Save in localStorage as history
     try {
       const existing = JSON.parse(localStorage.getItem('jp_reports') || '[]');
       existing.unshift({
@@ -87,14 +89,12 @@ export const CitizenMailbox: React.FC = () => {
       // storage quota or private browsing
     }
 
-    // Launch celebratory confetti
     confetti({
       particleCount: 80,
       spread: 70,
       origin: { y: 0.6 }
     });
 
-    // Automatically open WhatsApp with the formatted report
     const whatsappUrl = buildWhatsAppUrl(formatReportText());
     window.open(whatsappUrl, '_blank');
   };
@@ -113,16 +113,16 @@ export const CitizenMailbox: React.FC = () => {
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200 mb-3">
             <MapPin className="w-3.5 h-3.5" />
-            <span>Participación Ciudadana Activa</span>
+            <span>13 Comunas • 17 Corregimientos • 144 Veredas</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-slate-900 tracking-tight">
-            Reporta tu Comuna: <br className="hidden sm:inline" />
+            Mapa Territorial y <br className="hidden sm:inline" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-700 to-amber-600">
-              El Buzón de Ibagué
+              Buzón de Control Político
             </span>
           </h2>
           <p className="mt-4 text-base sm:text-lg text-slate-600 font-medium">
-            ¿Falta de agua en tu barrio? ¿Vías abandonadas? ¿Ideas para los jóvenes? Escríbelo aquí y envíalo directamente al equipo de John Polo. Tu voz será escuchada en el Concejo de Ibagué.
+            Selecciona tu comuna o sector rural para conocer el <strong className="text-slate-900">Proyecto Estratégico 2027–2030</strong> asignado a tu territorio y envíanos tu reporte sobre pérdidas del IBAL, ’valvuleros’, vías, microtráfico o empleo juvenil.
           </p>
         </div>
 
@@ -137,10 +137,10 @@ export const CitizenMailbox: React.FC = () => {
                   <CheckCircle className="w-8 h-8" />
                 </div>
                 <h3 className="text-2xl font-display font-black text-slate-900">
-                  ¡Reporte Preparado con Éxito!
+                  ¡Reporte Territorial Preparado con Éxito!
                 </h3>
                 <p className="text-slate-600 text-sm max-w-md mx-auto">
-                  Gracias <strong>{form.nombre}</strong>. Tu mensaje para <strong>{selectedComuna.name}</strong> está listo para ser enviado a nuestro canal oficial.
+                  Gracias <strong>{form.nombre}</strong>. Tu reporte para <strong>{selectedComuna.name}</strong> ha sido radicado para control político en el Concejo 2027–2030.
                 </p>
 
                 <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -151,7 +151,7 @@ export const CitizenMailbox: React.FC = () => {
                     className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm"
                   >
                     <MessageCircle className="w-5 h-5 fill-current" />
-                    <span>Reenviar por WhatsApp</span>
+                    <span>Enviar por WhatsApp</span>
                   </a>
 
                   <button
@@ -169,13 +169,13 @@ export const CitizenMailbox: React.FC = () => {
                         nombre: '',
                         telefono: '',
                         comunaId: '1',
-                        tema: 'Agua y Servicios Públicos',
+                        tema: TEMAS[0].label,
                         mensaje: ''
                       });
                     }}
                     className="w-full sm:w-auto text-xs font-bold text-red-700 hover:text-red-800 py-3"
                   >
-                    Enviar otro reporte
+                    Nuevo reporte
                   </button>
                 </div>
               </div>
@@ -192,7 +192,7 @@ export const CitizenMailbox: React.FC = () => {
                 {/* Comuna Selector */}
                 <div>
                   <label htmlFor="comuna" className="block text-xs font-extrabold uppercase text-slate-700 tracking-wider mb-1.5">
-                    1. Selecciona tu Comuna o Corregimiento *
+                    1. Selecciona tu Comuna (1 a 13) o Sector Rural (17 Corregimientos / 144 Veredas) *
                   </label>
                   <select
                     id="comuna"
@@ -208,28 +208,42 @@ export const CitizenMailbox: React.FC = () => {
                   </select>
                 </div>
 
-                {/* Tarjeta de Contexto de la Comuna Seleccionada */}
-                <div className="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/80 text-xs text-amber-900 flex items-start gap-2.5">
-                  <MapPin className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="block font-bold text-amber-950">
-                      Barrios principales de esta zona:
-                    </strong>
-                    <p className="mt-0.5 text-amber-800">
-                      {selectedComuna.barriosPrincipales.join(', ')}.
-                    </p>
-                    <p className="mt-1 text-[11px] text-amber-700 italic">
-                      Prioridad sentida: {selectedComuna.urgenciaPrincipal}
-                    </p>
+                {/* Ficha de Obra y Diagnóstico de la Comuna Seleccionada */}
+                <div className="space-y-2.5">
+                  <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200 text-xs text-amber-950 flex items-start gap-2.5">
+                    <MapPin className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                    <div>
+                      <strong className="block font-bold">
+                        Sectores / Barrios de referencia:
+                      </strong>
+                      <p className="mt-0.5 text-amber-900">
+                        {selectedComuna.barriosPrincipales.join(', ')}.
+                      </p>
+                      <p className="mt-1 text-[11px] text-amber-800">
+                        <strong>Problemática identificada:</strong> {selectedComuna.urgenciaPrincipal}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-emerald-50/90 border border-emerald-200 text-xs text-emerald-950 flex items-start gap-2.5">
+                    <Sparkles className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                    <div>
+                      <strong className="block font-extrabold uppercase tracking-wide text-emerald-800">
+                        Compromiso del Documento Maestro 2027–2030 en esta zona:
+                      </strong>
+                      <p className="mt-0.5 font-semibold text-slate-900">
+                        {selectedComuna.proyectoEstrategico2027}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                {/* Tema Selector */}
+                {/* Tema Selector: Los 7 Ejes */}
                 <div>
                   <label className="block text-xs font-extrabold uppercase text-slate-700 tracking-wider mb-2">
-                    2. ¿Sobre qué tema es tu reporte o idea? *
+                    2. Selecciona el Eje Estratégico de tu Reporte o Propuesta *
                   </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {TEMAS.map((item) => {
                       const Icon = item.icon;
                       const isSelected = form.tema === item.label;
@@ -238,13 +252,14 @@ export const CitizenMailbox: React.FC = () => {
                           type="button"
                           key={item.label}
                           onClick={() => setForm({ ...form, tema: item.label })}
-                          className={`p-2.5 rounded-xl border text-left text-xs font-bold transition-all flex flex-col gap-1.5 ${isSelected
+                          className={`p-2.5 rounded-xl border text-left text-xs font-bold transition-all flex items-center gap-2 ${
+                            isSelected
                               ? 'bg-red-700 text-white border-red-700 shadow-sm'
                               : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                            }`}
+                          }`}
                         >
-                          <Icon className={`w-4 h-4 ${isSelected ? 'text-yellow-300' : item.color}`} />
-                          <span className="line-clamp-2 leading-tight">{item.label}</span>
+                          <Icon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-yellow-300' : item.color}`} />
+                          <span className="leading-tight">{item.label}</span>
                         </button>
                       );
                     })}
@@ -255,12 +270,12 @@ export const CitizenMailbox: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="nombre" className="block text-xs font-extrabold uppercase text-slate-700 tracking-wider mb-1.5">
-                      Tu Nombre *
+                      Tu Nombre o JAC *
                     </label>
                     <input
                       id="nombre"
                       type="text"
-                      placeholder="Ej. Carlos Mendoza"
+                      placeholder="Ej. Carlos Mendoza / JAC Barrio..."
                       value={form.nombre}
                       onChange={(e) => setForm({ ...form, nombre: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-red-600 focus:outline-none transition-all text-sm font-medium"
@@ -275,7 +290,7 @@ export const CitizenMailbox: React.FC = () => {
                     <input
                       id="telefono"
                       type="tel"
-                      placeholder="Ej. 312 000 0000"
+                      placeholder="Ej. 302 509 1063"
                       value={form.telefono}
                       onChange={(e) => setForm({ ...form, telefono: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-red-600 focus:outline-none transition-all text-sm font-medium"
@@ -286,20 +301,17 @@ export const CitizenMailbox: React.FC = () => {
                 {/* Mensaje */}
                 <div>
                   <label htmlFor="mensaje" className="block text-xs font-extrabold uppercase text-slate-700 tracking-wider mb-1.5">
-                    3. Describe la problemática o tu propuesta *
+                    3. Describe el punto crítico o propuesta para el Concejo *
                   </label>
                   <textarea
                     id="mensaje"
                     rows={4}
-                    placeholder="Cuéntanos con detalle: calle, barrio, cuántos días llevan sin agua o qué propuesta tienes para los jóvenes..."
+                    placeholder="Indica dirección o vereda, fugas de agua del IBAL, cierres de válvulas, huecos, luminarias apagadas de INFIBAGUÉ o entorno inseguro..."
                     value={form.mensaje}
                     onChange={(e) => setForm({ ...form, mensaje: e.target.value })}
                     className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-red-600 focus:outline-none transition-all text-sm font-medium resize-none"
                     required
                   />
-                  <p className="text-[11px] text-slate-400 mt-1">
-                    Mínimo 10 caracteres. Todo reporte será sistematizado para los debates en el Concejo.
-                  </p>
                 </div>
 
                 {/* Botón de Envío */}
@@ -308,7 +320,7 @@ export const CitizenMailbox: React.FC = () => {
                   className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-display font-extrabold text-base text-white bg-red-700 hover:bg-red-800 shadow-brand active:scale-[0.99] transition-all"
                 >
                   <Send className="w-5 h-5" />
-                  <span>Enviar al Buzón & Abrir WhatsApp</span>
+                  <span>Radicar en Buzón & Enviar por WhatsApp</span>
                 </button>
 
               </form>
@@ -319,7 +331,6 @@ export const CitizenMailbox: React.FC = () => {
           {/* Columna Derecha: Vista Previa y Compromiso */}
           <div className="lg:col-span-5 space-y-6">
 
-            {/* Tarjeta de Vista Previa en Vivo */}
             <div className="bg-slate-900 text-white p-6 sm:p-7 rounded-3xl shadow-xl border border-slate-800 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/20 rounded-full blur-2xl pointer-events-none" />
 
@@ -327,46 +338,48 @@ export const CitizenMailbox: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
-                    Vista Previa del Reporte
+                    Ficha de Control Político
                   </span>
                 </div>
                 <span className="text-[10px] bg-red-950 text-red-300 border border-red-800 px-2 py-0.5 rounded-full font-bold">
-                  Concejo 2027
+                  Concejo 2027–2030
                 </span>
               </div>
 
               <div className="space-y-3 font-mono text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
                 <p className="text-yellow-400 font-bold">
-                  🏛️ REPORTE CIUDADANO IBAGUÉ
+                  🏛️ RADICADO CIUDADANO IBAGUÉ
                 </p>
-                <p>👤 <span className="text-slate-400">Ciudadano:</span> {form.nombre || '...'}</p>
-                <p>📍 <span className="text-slate-400">Comuna:</span> {selectedComuna.name}</p>
-                <p>🏷️ <span className="text-slate-400">Tema:</span> {form.tema}</p>
+                <p>👤 <span className="text-slate-400">Reporta:</span> {form.nombre || '...'}</p>
+                <p>📍 <span className="text-slate-400">Territorio:</span> {selectedComuna.name}</p>
+                <p>🏷️ <span className="text-slate-400">Eje:</span> {form.tema}</p>
+                <p className="text-emerald-300 text-[11px]">
+                  🏗️ <span className="text-slate-400">Obra 2027-2030:</span> {selectedComuna.proyectoEstrategico2027}
+                </p>
                 <div className="pt-2 border-t border-slate-800">
-                  <span className="text-slate-400 block mb-1">📝 Mensaje:</span>
+                  <span className="text-slate-400 block mb-1">📝 Detalle:</span>
                   <p className="text-white italic">
-                    "{form.mensaje || 'Tu mensaje aparecerá aquí en tiempo real...'}"
+                    "{form.mensaje || 'Escribe tu reporte para previsualizarlo en tiempo real...'}"
                   </p>
                 </div>
               </div>
 
               <div className="mt-4 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-                <span>Destino oficial:</span>
+                <span>Canal Oficial:</span>
                 <span className="text-emerald-400 font-bold flex items-center gap-1">
                   <MessageCircle className="w-3.5 h-3.5 fill-current" />
-                  WhatsApp Campaña John Polo
+                  Equipo Técnico John Fredy Polo
                 </span>
               </div>
             </div>
 
-            {/* Compromiso de Respuesta */}
             <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
               <h4 className="text-base font-display font-black text-slate-900 mb-2 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-amber-500" />
-                <span>¿Por qué es importante tu reporte?</span>
+                <span>De la Queja al Debate de Control Político</span>
               </h4>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Ningún político puede solucionar lo que no conoce desde la raíz. Cada reporte registrado en esta plataforma alimenta la agenda de control político que John Polo llevará a los debates de acueducto, malla vial y presupuesto en el Concejo Municipal.
+                En cumplimiento del <strong>Art. 313 de la Constitución y la Ley 136 de 1994</strong>, cada reporte alimenta las citaciones a gerentes del IBAL, INFIBAGUÉ y el Ente Gestor del SETP para exigir soluciones con rigor técnico y carácter.
               </p>
             </div>
 
