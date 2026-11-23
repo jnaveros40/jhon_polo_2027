@@ -10,20 +10,20 @@ export const CAMPAIGN_INFO = {
   sloganTerritorial: "Por una Ibagué que produce, recibe y crece.",
   manifesto: "Una ciudad con voz, oportunidades y futuro.",
   bioSummary: "Ibaguereño apasionado por su tierra, comprometido con la reactivación económica, la dignificación de nuestros artistas y el control estricto a los servicios públicos de la ciudad. Desde el Concejo de Ibagué, haremos que la voz de los barrios y las comunas resuene con contundencia.",
-  
+
   // Official Contacts & Socials
   whatsappNumber: "573123456789", // Reemplazar con el número real de campaña
   whatsappDisplay: "+57 (312) 345-6789",
   email: "contacto@johnpolo2027.com",
   socials: {
-    instagram: "https://instagram.com/johnpolotolima",
-    tiktok: "https://tiktok.com/@johnpolotolima",
-    facebook: "https://facebook.com/johnpolotolima",
+    instagram: "https://www.instagram.com/johnfredypolocampos",
+    tiktok: "https://www.tiktok.com/@john.fredy.polo?lang=es",
+    facebook: "https://www.facebook.com/john.f.polo.9",
     twitter: "https://twitter.com/johnpolotolima",
     youtube: "https://youtube.com/@johnpolotolima",
     whatsappChannel: "https://whatsapp.com/channel/johnpolo2027"
   },
-  
+
   // Media Assets
   images: {
     logo: "/images/logo-jp.png",

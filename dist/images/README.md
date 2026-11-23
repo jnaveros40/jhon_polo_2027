@@ -16,3 +16,4 @@ Este directorio contiene las imágenes oficiales utilizadas en la plataforma web
 ### 💡 Instrucciones para el Equipo de Campaña:
 1. Para actualizar cualquier fotografía o afiche oficial, simplemente guarda la nueva imagen en esta carpeta con el **mismo nombre exacto de archivo**.
 2. Vite y el Service Worker de la PWA detectarán los cambios y actualizarán la plataforma automáticamente en el próximo despliegue.
+

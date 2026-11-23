@@ -1,27 +1,29 @@
-import React from 'react';
-import { ArrowRight, Users, Sparkles, CheckCircle2, MessageCircle, MapPin, Flame } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, Users, Sparkles, CheckCircle2, MessageCircle, MapPin, Flame, Eye } from 'lucide-react';
 import { CAMPAIGN_INFO, buildWhatsAppUrl } from '../data/campaignData';
 
 export const HeroSection: React.FC = () => {
+  const [photoVariant, setPhotoVariant] = useState<'creer' | 'territorio'>('creer');
+
   const whatsAppHeroLink = buildWhatsAppUrl(
     `¡Hola John Polo! Quiero sumarme a tu campaña al Concejo de Ibagué 2027 y apoyar tus propuestas por una Ibagué que produce, recibe y crece.`
   );
 
   return (
     <section id="inicio" className="relative pt-6 pb-16 md:pt-12 md:pb-24 overflow-hidden bg-gradient-to-b from-slate-50 via-white to-red-50/20">
-      
+
       {/* Elementos Gráficos de Fondo */}
       <div className="absolute top-0 right-0 -mr-24 -mt-24 w-96 h-96 rounded-full bg-red-100/50 blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 left-0 -ml-24 w-80 h-80 rounded-full bg-yellow-100/40 blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-72 h-72 rounded-full bg-emerald-100/40 blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          
+
           {/* Columna Izquierda: Mensaje y Titulares */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            
+
             {/* Badges de Precandidatura y Localidad */}
             <div className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wide bg-red-700 text-white shadow-sm">
@@ -40,17 +42,31 @@ export const HeroSection: React.FC = () => {
               </span>
             </div>
 
-            {/* Titular Principal de Alto Impacto */}
+            {/* Identidad Gráfica Oficial de Campaña: Ibagué merece sonar más fuerte */}
             <div className="space-y-2">
-              <p className="text-sm md:text-base font-bold text-red-600 tracking-wider uppercase font-display">
-                Ibagué tiene con qué
-              </p>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-black text-slate-900 tracking-tight leading-[1.08]">
-                Ibagué merece <br className="hidden sm:inline" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-700 via-red-600 to-amber-600 underline decoration-yellow-400 decoration-wavy decoration-from-font">
-                  sonar más fuerte
-                </span>
-              </h1>
+              <div className="relative group max-w-xl mx-auto lg:mx-0">
+                {/* Resplandor con colores de la bandera de Ibagué */}
+                <div className="absolute -inset-1.5 rounded-3xl flag-gradient opacity-60 blur-xs group-hover:opacity-90 transition-opacity" />
+
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white bg-slate-900">
+                  <img
+                    src={CAMPAIGN_INFO.images.bannerLandscape}
+                    alt="Ibagué merece sonar más fuerte - John Polo Concejo de Ibagué 2027"
+                    className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                    loading="eager"
+                  />
+                  {/* Badge de Verificación de Identidad */}
+                  <div className="absolute top-2.5 right-2.5 bg-slate-950/85 backdrop-blur-md text-yellow-400 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-yellow-400/40 shadow-sm flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    John Polo - Concejo 2027
+                  </div>
+                </div>
+
+                {/* H1 SEO Accesible para motores de búsqueda y lectores de pantalla */}
+                <h1 className="sr-only">
+                  Ibagué merece sonar más fuerte - John Polo al Concejo de Ibagué 2027
+                </h1>
+              </div>
             </div>
 
             {/* Manifiesto y Subtítulo */}
@@ -121,21 +137,52 @@ export const HeroSection: React.FC = () => {
           {/* Columna Derecha: Tarjeta Fotográfica de Alto Impacto */}
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-sm sm:max-w-md lg:max-w-none">
-              
+
               {/* Marco estilizado con los colores de la bandera de Ibagué */}
               <div className="absolute -inset-2 rounded-3xl flag-gradient opacity-80 blur-sm transform -rotate-1" />
 
               <div className="relative bg-white p-3 rounded-2xl shadow-2xl border border-slate-200">
-                
+
+                {/* Selector de Fotografía Oficial */}
+                <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">
+                    Afiches Oficiales
+                  </span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setPhotoVariant('creer')}
+                      className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 ${photoVariant === 'creer'
+                        ? 'bg-red-700 text-white shadow-xs'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        }`}
+                    >
+                      <Eye className="w-3 h-3" />
+                      <span>Es Hora de Creer</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPhotoVariant('territorio')}
+                      className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 ${photoVariant === 'territorio'
+                        ? 'bg-red-700 text-white shadow-xs'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        }`}
+                    >
+                      <Eye className="w-3 h-3" />
+                      <span>En Territorio</span>
+                    </button>
+                  </div>
+                </div>
+
                 {/* Imagen del Candidato */}
                 <div className="relative rounded-xl overflow-hidden bg-slate-900 aspect-[4/5] group">
                   <img
-                    src={CAMPAIGN_INFO.images.heroCandidate}
+                    src={photoVariant === 'creer' ? CAMPAIGN_INFO.images.actionCandidate : CAMPAIGN_INFO.images.heroCandidate}
                     alt="John Polo - Candidato al Concejo de Ibagué 2027"
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                     loading="eager"
                   />
-                  
+
                   {/* Gradiente inferior para legibilidad */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
