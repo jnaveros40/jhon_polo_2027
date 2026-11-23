@@ -32,14 +32,13 @@ export const HeroSection: React.FC = () => {
                 {CAMPAIGN_INFO.campaignTitle}
               </span>
 
-              {/* Badge Oficial del Partido Liberal con Caballo Galopando y Sello Tricolor */}
+              {/* Badge Oficial con el Caballo Galopando y la Bandera de Ibagué */}
               <div
                 onClick={() => setPhotoVariant('caballo')}
                 className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black bg-white text-red-700 border-2 border-red-600/50 shadow-xs hover:border-red-600 hover:bg-red-50 transition-all cursor-pointer group"
-                title="Haz clic para ver la animación completa del Caballo Galopando y el Sello de Ibagué"
+                title="Sello Animado: Caballo Galopando con la Bandera de Ibagué"
               >
                 <CaballoLiberal size="xs" variant="sello" interactive={false} />
-                <CaballoLiberal size="xs" variant="red" interactive={false} />
                 <span>Partido Liberal • Ibagué</span>
               </div>
 
@@ -228,26 +227,19 @@ export const HeroSection: React.FC = () => {
                     2027–2030
                   </div>
 
-                  {/* Sello Circular Tricolor + Caballo Galopando Flotante sobre la Imagen */}
+                  {/* Sello Circular con la Bandera de Ibagué y Caballo Galopando Flotante */}
                   <div
                     onClick={() => setPhotoVariant(photoVariant === 'caballo' ? 'creer' : 'caballo')}
                     className="absolute top-12 right-3 z-10 bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-xl border-2 border-yellow-400 flex flex-col items-center gap-1 group cursor-pointer hover:scale-105 transition-transform"
                     title="Sello Animado con la Bandera de Ibagué y Caballo Galopando"
                   >
-                    <div className="flex items-center gap-1">
-                      <img
-                        src={CAMPAIGN_INFO.party.gifSello}
-                        alt="Sello Bandera de Ibagué Caballo Galopando"
-                        className="w-12 h-12 rounded-full object-contain border border-red-500"
-                      />
-                      <img
-                        src={CAMPAIGN_INFO.party.gif}
-                        alt="Caballo Liberal Galopando"
-                        className="w-9 h-14 object-contain"
-                      />
-                    </div>
-                    <span className="text-[9px] font-black uppercase text-red-700 leading-none text-center">
-                      Partido Liberal • Ibagué
+                    <img
+                      src={CAMPAIGN_INFO.party.gifSello}
+                      alt="Sello Bandera de Ibagué Caballo Galopando"
+                      className="w-12 h-12 rounded-full object-contain border border-red-500"
+                    />
+                    <span className="text-[9px] font-black uppercase text-red-700 leading-none text-center px-1">
+                      Liberal • Ibagué
                     </span>
                   </div>
 
