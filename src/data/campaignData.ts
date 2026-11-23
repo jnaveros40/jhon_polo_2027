@@ -41,6 +41,7 @@ export const CAMPAIGN_INFO = {
     short: "Partido Liberal",
     slogan: "Por la defensa de los derechos, el empleo digno y las oportunidades para los jóvenes",
     symbolName: "El Jinete y Caballo Liberal con la Bandera Roja",
+    gif: "/images/caballo-liberal-animado.gif",
     svg: "/images/caballo-liberal.svg",
     jpg: "/images/caballo-liberal.jpg"
   },

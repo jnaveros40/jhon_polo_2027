@@ -66,20 +66,19 @@ export const CaballoLiberal: React.FC<CaballoLiberalProps> = ({
           }`}
         />
 
-        {/* Gráfico Vectorial del Caballo Liberal */}
+        {/* Gráfico Animado del Caballo Liberal con Bandera Ondulante */}
         <div
           className={`relative transition-transform duration-300 ${
             animated ? (isExcited ? 'animate-horse-fast' : 'animate-horse-gallop') : ''
           } ${interactive ? 'group-hover:scale-105 active:scale-95' : ''}`}
         >
           <img
-            src={CAMPAIGN_INFO.party.svg}
-            alt="Caballo y Jinete - Partido Liberal Colombiano"
+            src={CAMPAIGN_INFO.party.gif}
+            alt="Caballo y Jinete con Bandera Ondulante - Partido Liberal Colombiano"
             className={`${sizeClasses[size]} object-contain drop-shadow-[0_4px_10px_rgba(211,47,47,0.35)]`}
             onError={(e) => {
-              // Fallback a JPG si el SVG tuviese algún inconveniente de carga
               const target = e.currentTarget;
-              target.src = CAMPAIGN_INFO.party.jpg;
+              target.src = CAMPAIGN_INFO.party.svg;
             }}
           />
         </div>
