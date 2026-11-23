@@ -6,8 +6,10 @@
 
 ### POST 1: Lanzamiento de la Plataforma Oficial & Buzón Comunal
 * **Objetivo:** Tráfico web y participación ciudadana.
-* **Redes:** Instagram Feed (1080x1350) y Facebook.
-* **Imagen sugerida:** Afiche "Ibagué tiene con qué. Es hora de creer" o banner panorámico.
+* **Redes:** Instagram Feed (1080x1080) y Facebook.
+* **Imagen Oficial Generada:** [`imagenes_posts/post_01_lanzamiento_plataforma.jpg`](./imagenes_posts/post_01_lanzamiento_plataforma.jpg)
+
+![Post 1 - Lanzamiento de Plataforma](./imagenes_posts/post_01_lanzamiento_plataforma.jpg)
 
 ```text
 ¡Hoy damos un paso histórico hacia una forma diferente de hacer política en Ibagué! 🏛️🚩
@@ -32,7 +34,9 @@ Las maquinarias tradicionales tienen el poder del dinero; nosotros tenemos la fu
 ### POST 2: El Agua es un Derecho, No un Privilegio (Fiscalización IBAL)
 * **Objetivo:** Generar debate comunitario y capturar inconformidades en comentarios.
 * **Redes:** Facebook (especialmente grupos locales como "Barrios de Ibagué", "Ibagué Se Respeta") e Instagram.
-* **Imagen sugerida:** Foto de John Polo en reunión comunitaria señalando una problemática de acueducto.
+* **Imagen Oficial Generada:** [`imagenes_posts/post_02_control_agua_ibal.jpg`](./imagenes_posts/post_02_control_agua_ibal.jpg)
+
+![Post 2 - Control al Agua e IBAL](./imagenes_posts/post_02_control_agua_ibal.jpg)
 
 ```text
 Es indignante que en la ciudad con una de las mayores cuencas hídricas del país, miles de familias en el Sur, en El Salado y en las comunas populares tengan que vivir pendientes de cuándo les cortan el agua. 💧🚫
@@ -54,7 +58,9 @@ Déjanos en los comentarios: ¿En qué comuna vives y cuántas veces a la semana
 ### POST 3: Dignidad para Nuestros Músicos y el Festival Folclórico
 * **Objetivo:** Conectar con el sector cultural, gestores, bailarines y gremios gastronómicos.
 * **Redes:** Instagram Reel / Post carrusel.
-* **Imagen sugerida:** Foto de John Polo con instrumentos típicos (tiple/tamboril) o en el Cañón del Combeima.
+* **Imagen Oficial Generada:** [`imagenes_posts/post_03_cultura_festival_folclorico.jpg`](./imagenes_posts/post_03_cultura_festival_folclorico.jpg)
+
+![Post 3 - Cultura y Festival Folclórico](./imagenes_posts/post_03_cultura_festival_folclorico.jpg)
 
 ```text
 Ibagué es la Capital Musical de Colombia ante el mundo, pero esa música no puede sonar solo una semana en junio. 🎶🇨🇴
@@ -77,7 +83,9 @@ Por una Ibagué que produce, recibe con calidez y crece. ¡Ibagué merece sonar 
 ### POST 4: Respaldo del Partido Liberal: Tradición y Juventud
 * **Objetivo:** Posicionar el aval y el símbolo del caballo liberal entre la base del partido y votantes independientes.
 * **Redes:** Facebook, Instagram y grupos de líderes.
-* **Imagen sugerida:** La silueta del Caballo Liberal animado con el logo de John Polo y la bandera de Ibagué.
+* **Imagen Oficial Generada:** [`imagenes_posts/post_04_respaldo_partido_liberal.jpg`](./imagenes_posts/post_04_respaldo_partido_liberal.jpg)
+
+![Post 4 - Fuerza Liberal por Ibagué](./imagenes_posts/post_04_respaldo_partido_liberal.jpg)
 
 ```text
 Nos identifican los valores que históricamente han transformado a Colombia: la justicia social, la educación pública como motor de igualdad y la defensa férrea de los intereses de la gente de a pie. 🐎🚩
@@ -99,7 +107,9 @@ Súmate a la fuerza del cambio con John Polo. Escríbenos al WhatsApp oficial (e
 ### POST 5: Mensaje de Fin de Semana (Territorio y Familia)
 * **Objetivo:** Humanización de la precampaña y cercanía.
 * **Redes:** Instagram Stories, Facebook y Estados de WhatsApp.
-* **Imagen sugerida:** Fotografía espontánea de John Polo saludando a una familia tolimense o comiendo un tamal en la plaza.
+* **Imagen Oficial Generada:** [`imagenes_posts/post_05_fin_de_semana_territorio.jpg`](./imagenes_posts/post_05_fin_de_semana_territorio.jpg)
+
+![Post 5 - Territorio y Familia](./imagenes_posts/post_05_fin_de_semana_territorio.jpg)
 
 ```text
 No hay nada más reconfortante que recorrer las calles de Ibagué, sentir el abrazo cálido de nuestra gente y escuchar las ganas que tienen de ver a su ciudad salir adelante. ❤️🏔️
