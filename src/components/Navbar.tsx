@@ -9,10 +9,11 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Inicio', href: '#inicio' },
-    { name: '7 Ejes 2027-2030', href: '#propuestas' },
+    { name: '7 Ejes 2027–2030', href: '#propuestas' },
     { name: 'Matriz & 80-10-10', href: '#matriz-estrategica' },
     { name: 'Buzón Territorial', href: '#buzon' },
-    { name: 'Voluntarios', href: '#voluntarios' },
+    { name: 'Voluntarios & Credencial', href: '#voluntarios' },
+    { name: 'Proyectos Insignia', href: '#ibague' },
   ];
 
   const handleLinkClick = () => {

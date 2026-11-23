@@ -26,16 +26,16 @@ export const IbagueHighlights: React.FC = () => {
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-yellow-400/10 text-yellow-400 border border-yellow-400/20 mb-3">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Nuestra Identidad & Vocación</span>
+            <span>Misión Territorial 2027 – 2030 • Obras y Soluciones Estructurales</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-black tracking-tight text-white">
-            Ibagué Tiene Con Qué: <br className="hidden sm:inline" />
+            Proyectos Insignia para <br className="hidden sm:inline" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-red-400">
-              Es Hora de Creer
+              Devolver la Dignidad a Ibagué
             </span>
           </h2>
           <p className="mt-4 text-base sm:text-lg text-slate-300 font-medium">
-            No podemos resignarnos a ver a nuestros jóvenes marcharse por falta de oportunidades. Ibagué cuenta con la riqueza natural, cultural y gastronómica más envidiable del país.
+            De las 144 veredas y la Central de Acopio en la Calle 19 hasta los 2 Cables Aéreos, la Plaza 28 Modelo Concordia y la telemetría contra el cartel de valvuleros en el IBAL.
           </p>
         </div>
 

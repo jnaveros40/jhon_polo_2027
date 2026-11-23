@@ -149,14 +149,14 @@ export const VolunteersSection: React.FC = () => {
 
     // Compromiso
     ctx.fillStyle = '#CBD5E1';
-    ctx.font = '500 22px Inter, sans-serif';
-    ctx.fillText('Por el Empleo Juvenil • El Turismo Productivo', 450, 640);
-    ctx.fillText('El Agua Continua • El Control Político Firme', 450, 680);
+    ctx.font = '500 21px Inter, sans-serif';
+    ctx.fillText('7 Ejes Estratégicos • Esquema Financiero 80-10-10', 450, 640);
+    ctx.fillText('Acopio Cll 19 • Agua 24/7 IBAL • INFIBAGUÉ 75/25 • Cable Aéreo', 450, 680);
 
     // Badge de Verificación
     ctx.fillStyle = '#10B981';
     ctx.font = 'bold 22px Inter, sans-serif';
-    ctx.fillText('✓ REGISTRO CIUDADANO VERIFICADO', 450, 760);
+    ctx.fillText('✓ VEEDOR Y MULTIPLICADOR CIUDADANO 2027–2030', 450, 760);
 
     // Footer de la Tarjeta
     ctx.fillStyle = '#EF4444';
@@ -164,8 +164,8 @@ export const VolunteersSection: React.FC = () => {
     ctx.fillText('AVAL OFICIAL • PARTIDO LIBERAL COLOMBIANO', 450, 865);
 
     ctx.fillStyle = '#F8FAFC';
-    ctx.font = 'bold 26px Montserrat, sans-serif';
-    ctx.fillText('JOHN POLO AL CONCEJO DE IBAGUÉ 2027', 450, 910);
+    ctx.font = 'bold 25px Montserrat, sans-serif';
+    ctx.fillText('JOHN FREDY POLO • CONCEJO DE IBAGUÉ 2027–2030', 450, 910);
 
     ctx.fillStyle = '#64748B';
     ctx.font = '500 18px Inter, sans-serif';
@@ -455,17 +455,17 @@ export const VolunteersSection: React.FC = () => {
 
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-2xl bg-red-950/90 border border-red-500/50">
-                    <CaballoLiberal size="xs" variant="tricolor" />
+                    <CaballoLiberal size="xs" variant="sello" />
                     <span className="text-[10px] font-black uppercase text-red-200 leading-tight">
-                      Partido<br />Liberal
+                      Liberal<br />Ibagué
                     </span>
                   </div>
                   <div className="flex flex-col items-end">
                     <span className="text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
                       <Shield className="w-3 h-3" />
-                      OFICIAL
+                      2027–2030
                     </span>
-                    <span className="text-[9px] text-slate-400 mt-0.5">#EsHoraDeCreer</span>
+                    <span className="text-[9px] text-slate-400 mt-0.5">Esquema 80-10-10</span>
                   </div>
                 </div>
               </div>
@@ -473,7 +473,7 @@ export const VolunteersSection: React.FC = () => {
               {/* Cuerpo de la Tarjeta */}
               <div className="text-center py-4 px-2 relative z-10 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xs mb-5">
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
-                  Yo Creo en Ibagué
+                  Ibagué Sostenible, Industrial, Segura y Conectada
                 </p>
                 <h4 className="text-2xl sm:text-3xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-white to-red-400 tracking-tight">
                   {cardName.trim() || 'Ciudadano Ibaguereño'}
@@ -484,7 +484,7 @@ export const VolunteersSection: React.FC = () => {
                 </div>
 
                 <p className="text-xs text-slate-300 italic mt-3 font-serif">
-                  «Por una Ibagué que produce, recibe y crece. ¡Ibagué merece sonar más fuerte!»
+                  «{CAMPAIGN_INFO.closingMasterQuote}»
                 </p>
               </div>
 
