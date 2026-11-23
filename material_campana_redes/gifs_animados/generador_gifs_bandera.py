@@ -190,32 +190,32 @@ def split_body_into_skeletal_parts(body_img, scale):
                 continue
             sx = x / float(scale)
 
-            # 1. Check Tail region
-            if sx < 176 and 375 <= sy <= 492:
+            # 1. Check Tail region (only the free-hanging tail plume on the left)
+            if sx < 170 and 380 <= sy <= 490:
                 p_tail[x, y] = c
-                if sx > 164:
-                    p_torso[x, y] = c  # overlap at tail root
+                if sx > 156:
+                    p_torso[x, y] = c  # smooth overlap at tail root
                 continue
 
-            # 2. Check Hind Leg (leftmost leg)
-            if sy >= 500 and sx < 236:
+            # 2. Check Hind Leg (leftmost leg, emerging below the thigh at sy >= 546)
+            if sy >= 542 and sx < 236:
                 p_hind[x, y] = c
-                if sy <= 525:
-                    p_torso[x, y] = c  # overlap at hip joint
+                if sy <= 562:
+                    p_torso[x, y] = c  # smooth hip overlap so croup never notches
                 continue
 
-            # 3. Check Center Legs
-            if sy >= 512 and 236 <= sx < 332:
+            # 3. Check Center Legs (emerging below the barrel/belly at sy >= 548)
+            if sy >= 546 and 236 <= sx < 332:
                 p_mid[x, y] = c
-                if sy <= 536:
-                    p_torso[x, y] = c  # overlap at hip/stifle joint
+                if sy <= 566:
+                    p_torso[x, y] = c  # smooth belly overlap
                 continue
 
-            # 4. Check Front Right Leg
-            if sy >= 492 and sx >= 332:
+            # 4. Check Front Right Leg (emerging below the chest at sy >= 534)
+            if sy >= 532 and sx >= 332:
                 p_front[x, y] = c
-                if sy <= 518:
-                    p_torso[x, y] = c  # overlap at shoulder joint
+                if sy <= 554:
+                    p_torso[x, y] = c  # smooth shoulder/chest overlap
                 continue
 
             # Otherwise belongs to Torso/Rider/Head
@@ -367,38 +367,38 @@ def compose_galloping_horse_frame(
     frame = Image.new("RGBA", (W, H), (0, 0, 0, 0))
 
     # 1. Hind Leg (Pata trasera izquierda): strong propulsion swing + hock bend
-    ang_hind_upper = 17.0 * math.sin(phase)
-    ang_hind_knee = -22.0 * max(0.0, math.sin(phase - 0.7))
+    ang_hind_upper = 20.0 * math.sin(phase)
+    ang_hind_knee = -26.0 * max(0.0, math.sin(phase - 0.7))
     hind_anim = articulate_limb(
-        leg_hind_img, pivot_xy=(196, 515), knee_y=625,
+        leg_hind_img, pivot_xy=(208, 552), knee_y=645,
         angle_upper_deg=ang_hind_upper, angle_lower_deg=ang_hind_knee,
-        blend_top_y=502, scale=scale
+        blend_top_y=544, scale=scale
     )
 
     # 2. Mid Legs (Patas centrales): counter-phase stride so legs scissor visibly!
-    ang_mid_upper = -16.0 * math.sin(phase + 0.35)
-    ang_mid_knee = -20.0 * max(0.0, -math.sin(phase - 0.3))
+    ang_mid_upper = -19.0 * math.sin(phase + 0.35)
+    ang_mid_knee = -24.0 * max(0.0, -math.sin(phase - 0.3))
     mid_anim = articulate_limb(
-        leg_mid_img, pivot_xy=(272, 525), knee_y=635,
+        leg_mid_img, pivot_xy=(272, 556), knee_y=650,
         angle_upper_deg=ang_mid_upper, angle_lower_deg=ang_mid_knee,
-        blend_top_y=514, scale=scale
+        blend_top_y=548, scale=scale
     )
 
     # 3. Front Right Leg (Pata delantera levantada): reaches forward and bends knee
-    ang_front_upper = -19.0 * math.sin(phase - 0.85)
-    ang_front_knee = 25.0 * max(0.0, math.sin(phase + 0.5))
+    ang_front_upper = -22.0 * math.sin(phase - 0.85)
+    ang_front_knee = 28.0 * max(0.0, math.sin(phase + 0.5))
     front_anim = articulate_limb(
-        leg_front_img, pivot_xy=(358, 505), knee_y=605,
+        leg_front_img, pivot_xy=(364, 542), knee_y=625,
         angle_upper_deg=ang_front_upper, angle_lower_deg=ang_front_knee,
-        blend_top_y=494, scale=scale
+        blend_top_y=534, scale=scale
     )
 
     # 4. Tail (Cola): whips with the gallop rhythm
-    ang_tail = 14.0 * math.sin(phase - 1.1)
+    ang_tail = 15.0 * math.sin(phase - 1.1)
     tail_anim = articulate_limb(
-        tail_img, pivot_xy=(174, 412), knee_y=455,
+        tail_img, pivot_xy=(168, 412), knee_y=455,
         angle_upper_deg=ang_tail, angle_lower_deg=ang_tail * 0.6,
-        blend_top_y=380, scale=scale
+        blend_top_y=385, scale=scale
     )
 
     # 5. Waving Flag Cloth
@@ -429,6 +429,7 @@ def generate_gifs():
 
     num_frames = 18
     frames_transparent = []
+    frames_transparent_tricolor = []
     frames_dark_card = []
     frames_white_badge_tricolor = []
 
@@ -450,7 +451,7 @@ def generate_gifs():
         ).resize((out_w, out_h), Image.LANCZOS)
 
         # ---------------------------------------------------------------------
-        # GIF 1: Transparent Background (Galloping + Waving Flag)
+        # GIF 1A: Transparent Background (Galloping + Waving RED Flag)
         # ---------------------------------------------------------------------
         alpha = gallop_red.getchannel("A")
         rgb_for_trans = Image.new("RGB", gallop_red.size, (255, 255, 255))
@@ -459,6 +460,17 @@ def generate_gifs():
         mask = Image.eval(alpha, lambda a: 255 if a <= 128 else 0)
         p_frame.paste(255, mask)
         frames_transparent.append(p_frame)
+
+        # ---------------------------------------------------------------------
+        # GIF 1B: Transparent Background (Galloping + Waving IBAGUÉ TRICOLOR Flag)
+        # ---------------------------------------------------------------------
+        alpha_tri = gallop_tricolor.getchannel("A")
+        rgb_for_trans_tri = Image.new("RGB", gallop_tricolor.size, (255, 255, 255))
+        rgb_for_trans_tri.paste(gallop_tricolor, mask=alpha_tri)
+        p_frame_tri = rgb_for_trans_tri.convert("P", palette=Image.ADAPTIVE, colors=255)
+        mask_tri = Image.eval(alpha_tri, lambda a: 255 if a <= 128 else 0)
+        p_frame_tri.paste(255, mask_tri)
+        frames_transparent_tricolor.append(p_frame_tri)
 
         # ---------------------------------------------------------------------
         # GIF 2: Dark Campaign Poster GIF (Galloping + Waving Flag)
@@ -537,6 +549,28 @@ def generate_gifs():
         duration=55, loop=0
     )
     print("Saved:", gif3_path)
+
+    # Also save all animated GIFs into public/images/ for the Landing Page
+    pub_sello_path = os.path.join(ROOT_DIR, "public", "images", "sello-caballo-tricolor.gif")
+    frames_white_badge_tricolor[0].save(
+        pub_sello_path, save_all=True, append_images=frames_white_badge_tricolor[1:],
+        duration=55, loop=0
+    )
+    print("Saved:", pub_sello_path)
+
+    pub_tri_path = os.path.join(ROOT_DIR, "public", "images", "caballo-tricolor-animado.gif")
+    frames_transparent_tricolor[0].save(
+        pub_tri_path, save_all=True, append_images=frames_transparent_tricolor[1:],
+        duration=55, loop=0, transparency=255, disposal=2
+    )
+    print("Saved:", pub_tri_path)
+
+    pub_card_path = os.path.join(ROOT_DIR, "public", "images", "caballo-liberal-card.gif")
+    frames_dark_card[0].save(
+        pub_card_path, save_all=True, append_images=frames_dark_card[1:],
+        duration=55, loop=0
+    )
+    print("Saved:", pub_card_path)
 
 
 if __name__ == "__main__":

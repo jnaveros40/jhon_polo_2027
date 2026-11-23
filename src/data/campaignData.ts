@@ -40,11 +40,14 @@ export const CAMPAIGN_INFO = {
   // Media Assets
   images: {
     logo: "/images/logo-jp.png",
+    selloAnimado: "/images/sello-caballo-tricolor.gif",
     heroCandidate: "/images/candidato-hero.jpg",
     actionCandidate: "/images/candidato-accion.jpg",
     bannerLandscape: "/images/ibague-banner.jpg",
     altPoster: "/images/ibague-creer.jpg",
-    caballoLiberal: "/images/caballo-liberal.svg",
+    caballoLiberal: "/images/caballo-liberal-animado.gif",
+    caballoTricolor: "/images/caballo-tricolor-animado.gif",
+    caballoCard: "/images/caballo-liberal-card.gif",
     caballoLiberalJpg: "/images/caballo-liberal.jpg"
   },
 
@@ -53,8 +56,11 @@ export const CAMPAIGN_INFO = {
     name: "Partido Liberal Colombiano",
     short: "Partido Liberal",
     slogan: "Por la defensa de los derechos, el empleo digno y las oportunidades para los jóvenes",
-    symbolName: "El Jinete y Caballo Liberal con la Bandera Roja",
+    symbolName: "El Jinete y Caballo Liberal Galopando con la Bandera en Movimiento",
     gif: "/images/caballo-liberal-animado.gif",
+    gifTricolor: "/images/caballo-tricolor-animado.gif",
+    gifSello: "/images/sello-caballo-tricolor.gif",
+    gifCard: "/images/caballo-liberal-card.gif",
     svg: "/images/caballo-liberal.svg",
     jpg: "/images/caballo-liberal.jpg"
   },
