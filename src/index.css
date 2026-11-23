@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  body {
+    @apply bg-slate-50 text-slate-900 font-sans antialiased overflow-x-hidden;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Ibagué Flag Accent Gradients */
+.flag-gradient {
+  background: linear-gradient(90deg, #FBC02D 0%, #FBC02D 33.3%, #2E7D32 33.3%, #2E7D32 66.6%, #D32F2F 66.6%, #D32F2F 100%);
+}
+
+.flag-gradient-vertical {
+  background: linear-gradient(180deg, #FBC02D 0%, #FBC02D 33.3%, #2E7D32 33.3%, #2E7D32 66.6%, #D32F2F 66.6%, #D32F2F 100%);
+}
+
+.badge-shine {
+  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+}
+
