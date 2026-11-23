@@ -609,12 +609,12 @@ def main():
         sello.alpha_composite(h_in, ((240 - 125) // 2, 18))
         sello_frames.append(sello)
 
-    print("2. Loading John Polo Caricature Poses & Official Assets...")
-    pose_front = extract_caricature_rgba(os.path.join(CARICATURA_DIR, "Gemini_Generated_Image_3j909g3j909g3j90.jpeg"))
-    pose_walk = extract_caricature_rgba(os.path.join(CARICATURA_DIR, "Gemini_Generated_Image_3j909g3j909g3j90 (1).jpeg"))
-    pose_thumb = extract_caricature_rgba(os.path.join(CARICATURA_DIR, "Gemini_Generated_Image_3j909g3j909g3j90 (2).jpeg"))
-    pose_side = extract_caricature_rgba(os.path.join(CARICATURA_DIR, "Gemini_Generated_Image_3j909g3j909g3j90 (3).jpeg"))
-    pose_point = extract_caricature_rgba(os.path.join(CARICATURA_DIR, "Gemini_Generated_Image_3j909g3j909g3j90 (4).jpeg"))
+    print("2. Loading approved John Polo Caricature Poses (Sombrero Tolimense) & Official Assets...")
+    pose_front = extract_caricature_rgba(os.path.join(CARICATURA_DIR, "pose_01_frontal_principal.jpg"))
+    pose_thumb = extract_caricature_rgba(os.path.join(CARICATURA_DIR, "pose_03_frontal_pulgar.jpg"))
+    pose_walk = pose_front
+    pose_side = pose_thumb
+    pose_point = pose_front
 
     logo_jp = Image.open(os.path.join(IMG_DIR, "logo-jp.png")).convert("RGBA")
     banner_sonar = Image.open(os.path.join(IMG_DIR, "ibague-banner.jpg")).convert("RGBA")
