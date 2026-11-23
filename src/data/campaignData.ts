@@ -12,9 +12,9 @@ export const CAMPAIGN_INFO = {
   bioSummary: "Ibaguereño apasionado por su tierra, comprometido con la reactivación económica, la dignificación de nuestros artistas y el control estricto a los servicios públicos de la ciudad. Desde el Concejo de Ibagué, haremos que la voz de los barrios y las comunas resuene con contundencia.",
 
   // Official Contacts & Socials
-  whatsappNumber: "573123456789", // Reemplazar con el número real de campaña
-  whatsappDisplay: "+57 (312) 345-6789",
-  email: "contacto@johnpolo2027.com",
+  whatsappNumber: "573025091063", // Reemplazar con el número real de campaña
+  whatsappDisplay: "+57 (302) 509-1063",
+  email: "[EMAIL_ADDRESS]",
   socials: {
     instagram: "https://www.instagram.com/johnfredypolocampos",
     tiktok: "https://www.tiktok.com/@john.fredy.polo?lang=es",
