@@ -83,7 +83,7 @@ export const HeroSection: React.FC = () => {
                 {CAMPAIGN_INFO.candidateFullName} • «{CAMPAIGN_INFO.programName}»
               </p>
               <p className="text-base sm:text-lg text-slate-700 font-medium leading-relaxed">
-                Plataforma programática con <strong className="text-slate-900">7 Ejes Estratégicos</strong> fundamentados en Max-Neef, Amartya Sen y Mariana Mazzucato: gobernanza agrologística en la Calle 19, renovación de 30 km/año de redes del IBAL sin cartel de valvuleros, INFIBAGUÉ 75/25 como Banca Juvenil, Plaza 28 Modelo Concordia, Viaducto Mirolindo, SETP con 2 Cables Aéreos y Seguridad Cívica.
+                Plataforma programática con <strong className="text-slate-900">7 Ejes Estratégicos</strong> fundamentados en Max-Neef, Amartya Sen y Mariana Mazzucato: gobernanza agrologística en la Calle 19, renovación de 30 km/año de redes del IBAL con telemetría digital, INFIBAGUÉ 75/25 como Banca Juvenil, Plaza 28 Modelo Concordia, Viaducto Mirolindo, SETP con 2 Cables Aéreos y Seguridad Cívica.
               </p>
             </div>
 
@@ -95,7 +95,7 @@ export const HeroSection: React.FC = () => {
               </div>
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/90 border border-slate-200 shadow-xs">
                 <CheckCircle2 className="w-4 h-4 text-red-600 shrink-0" />
-                <span className="text-xs font-bold text-slate-800">30 km/año Redes IBAL & Fin del 'Cartel Valvuleros'</span>
+                <span className="text-xs font-bold text-slate-800">30 km/año Redes IBAL & Telemetría Digital 24/7</span>
               </div>
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/90 border border-slate-200 shadow-xs">
                 <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0" />

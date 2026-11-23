@@ -7,7 +7,7 @@ import struct
 import subprocess
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 IMG_DIR = os.path.join(ROOT_DIR, "public", "images")
 CARICATURA_DIR = os.path.join(ROOT_DIR, "material_campana_redes", "jhon_polo")
 OUT_DIR = os.path.join(ROOT_DIR, "material_campana_redes", "videos_publicitarios")
@@ -619,20 +619,20 @@ def main():
     logo_jp = Image.open(os.path.join(IMG_DIR, "logo-jp.png")).convert("RGBA")
     banner_sonar = Image.open(os.path.join(IMG_DIR, "ibague-banner.jpg")).convert("RGBA")
 
-    # VIDEO 7: Fórmula P-S-P -> Eje 2: Agua e IBAL sin Mafias
+    # VIDEO 7: Fórmula P-S-P -> Eje 2: Agua Continua, IBAL y Telemetría Digital
     render_psp_vertical_video(
         out_filename="video_07_oleada3_psp_agua_ibal_sin_mafias_9x16.mp4",
-        nicho_badge="EJE 2 • AGUA E IBAL SIN MAFIAS (13 COMUNAS)",
+        nicho_badge="EJE 2 • AGUA CONTINUA Y TELEMETRÍA IBAL (13 COMUNAS)",
         hook_3s_top="¿TU BARRIO SIN AGUA Y LA FACTURA CARA?",
         hook_3s_main="¡1 MILLÓN DE M³ PERDIDOS!",
         p_problema_lines=[
             "El IBAL pierde ~1 millón de m³/mes en fugas,",
-            "rompe las calles y el 'cartel de los valvuleros'",
-            "manipula el suministro en las comunas."
+            "socava y rompe las calles por redes obsoletas",
+            "y deja a los barrios con baja presión y cortes."
         ],
         s_solucion_lines=[
             "✓ Meta: 30 km/año de tubería nueva (120 km en 4 años)",
-            "✓ Telemetría y válvulas automatizadas sin mafias",
+            "✓ Telemetría digital y válvulas automatizadas 24/7",
             "✓ +$8.000 Millones/año recuperados en agua potable"
         ],
         p_concejo_lines=[

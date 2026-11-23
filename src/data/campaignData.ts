@@ -123,7 +123,7 @@ export const COUNCILOR_COMPETENCES: FunctionalCompetence[] = [
     description: "Vigilancia implacable sobre los recursos públicos, concesiones y operación de servicios.",
     actions: [
       "Citación a gerentes y secretarios con indicadores técnicos verificables.",
-      "Desmantelamiento de mafias internas: fin del 'cartel de los valvuleros' en el IBAL.",
+      "Auditoría técnica a las pérdidas de agua y exigencia de telemetría digital en el IBAL.",
       "Freno a especuladores de calle y bloqueos al recaudo único del SETP.",
       "Auditoría y vigilancia estricta de concesiones municipales."
     ]
@@ -188,13 +188,13 @@ export const PROGRAMMATIC_PILLARS: ProgrammaticPillar[] = [
   {
     id: "eje-2-agua-ibal",
     number: 2,
-    shortTitle: "2. Agua, IBAL y Fin de Valvuleros",
-    title: "Eje 2: Eficiencia Hidrosanitaria, Meta 30 km/año y Fin del 'Cartel de los Valvuleros'",
-    tagline: "Recuperación de pérdidas multimillonarias de agua, renovación real de redes y telemetría contra las mafias del agua.",
-    badge: "Agua sin Mafias & Telemetría",
+    shortTitle: "2. Agua, IBAL y Telemetría Digital",
+    title: "Eje 2: Eficiencia Hidrosanitaria, Meta 30 km/año y Telemetría Digital en Redes",
+    tagline: "Recuperación de pérdidas multimillonarias de agua, renovación real de redes y telemetría para suministro continuo 24/7.",
+    badge: "Agua Continua & Telemetría",
     color: "red",
     icon: "ShieldCheck",
-    problematicaCentral: "El IBAL pierde cerca de 1 millón de m³ mensuales (~$32.000 millones anuales) por redes obsoletas (+70% de ~800 km) que socavan el subsuelo, sumado al 'cartel de los valvuleros'.",
+    problematicaCentral: "El IBAL pierde cerca de 1 millón de m³ mensuales (~$32.000 millones anuales) por redes obsoletas (+70% de ~800 km) que socavan el subsuelo y generan baja presión e intermitencia en las comunas.",
     solucionNormativa: "Meta obligatoria de renovación de 30 km/año de red hidrosanitaria (120 km en el cuatrienio) + Automatización y telemetría digital en válvulas matrices.",
     entidadEjecutora: "IBAL E.S.P. / Ministerio de Vivienda, Ciudad y Territorio",
     proposals: [
@@ -208,11 +208,11 @@ export const PROGRAMMATIC_PILLARS: ProgrammaticPillar[] = [
         impactMetrics: "+$8.000 millones/año recuperados en agua"
       },
       {
-        id: "fin-cartel-valvuleros",
-        title: "Desmantelamiento del 'Cartel de los Valvuleros' con Telemetría Digital",
-        summary: "Automatización y telemetría en tiempo real en las válvulas matrices para erradicar el desvío político del agua.",
-        description: "Acabaremos con la mafia interna del 'cartel de los valvuleros' que cierra y desvía el suministro de agua en las comunas por favores políticos o presiones particulares. Exigiremos válvulas matrices automatizadas con telemetría pública auditable en línea.",
-        tags: ["Fin Cartel Valvuleros", "Telemetría Digital", "Válvulas Matrices", "Control Político"],
+        id: "telemetria-valvulas-matrices",
+        title: "Automatización y Telemetría Digital en Válvulas Matrices del IBAL",
+        summary: "Monitoreo inteligente de presiones y caudales en tiempo real para garantizar distribución equitativa y continua en las 13 comunas.",
+        description: "Implementaremos un sistema de válvulas matrices automatizadas con sensores de presión y telemetría pública auditable en línea, permitiendo detectar fugas al instante, equilibrar las presiones hidráulicas y garantizar continuidad del servicio 24/7 en todos los barrios.",
+        tags: ["Telemetría Digital", "Válvulas Automatizadas", "Agua Continua 24/7", "Control Técnico"],
         icon: "ShieldCheck",
         impactMetrics: "100% válvulas matrices con telemetría digital"
       }
@@ -406,7 +406,7 @@ export const STRATEGIC_MATRIX: StrategicMatrixRow[] = [
   {
     ejeNumber: 2,
     ejeTematico: "2. Agua e IBAL",
-    problematicaCentral: "Pérdida de 1M m³/mes ($32kM/año), calles socavadas y cartel valvuleros.",
+    problematicaCentral: "Pérdida de 1M m³/mes ($32kM/año), calles socavadas e intermitencia en el servicio.",
     solucionPropuesta: "Meta 30 km/año renovación red + Automatización y telemetría de válvulas matrices.",
     entidadAliado: "IBAL E.S.P. / MinVivienda"
   },
@@ -532,7 +532,7 @@ export const COMUNAS_IBAGUE: ComunaInfo[] = [
     number: 8,
     name: "Comuna 8 - Topacio, Ciudadela Simón Bolívar & Jardín",
     barriosPrincipales: ["El Topacio", "Ciudadela Simón Bolívar", "Jardín Santander", "Nueva Castilla", "Atolsure"],
-    urgenciaPrincipal: "Cortes de agua por 'valvuleros', microtráfico y desempleo juvenil y femenino.",
+    urgenciaPrincipal: "Cortes e intermitencia de agua potable, microtráfico y desempleo juvenil y femenino.",
     proyectoEstrategico2027: "Plan de Choque y Entornos Seguros (polideportivos INFIBAGUÉ LED, centros de atención juvenil y Banca de Segundo Piso) + Telemetría digital en válvulas matrices del IBAL."
   },
   {
@@ -626,9 +626,9 @@ export const IBAGUE_HIGHLIGHTS = [
     badge: "Eje 6 • Movilidad Multimodal"
   },
   {
-    title: "Plaza de la 21, Seguridad y Fin de 'Valvuleros'",
+    title: "Plaza de la 21, Seguridad y Telemetría IBAL",
     subtitle: "30 km/año de Redes IBAL y Entornos Seguros",
-    desc: "Telemetría digital contra el cartel de los valvuleros (+$8.000M/año recuperados), intervención del 'Bronx' en la 21 y choque al microtráfico.",
+    desc: "Telemetría digital y renovación hidrosanitaria (+$8.000M/año recuperados en agua), intervención del 'Bronx' en la 21 y choque al microtráfico.",
     badge: "Ejes 2 y 7 • Orden y Agua"
   }
 ];

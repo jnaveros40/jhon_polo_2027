@@ -294,7 +294,7 @@ GUIONES_CAMPANA_GEMINI_38 = [
         "audio_07.mp3",
         14.1,
         "Constructive indignation at the start, transitioning into sharp managerial authority and firm commitment. Agile pacing.",
-        "¿Tu barrio sin agua y el recibo por las nubes? El IBAL pierde un millón de metros cúbicos de agua al mes y rompe las calles. Con treinta kilómetros por año de tubería nueva y telemetría digital, acabaremos el cartel de los valvuleros. Desde el Concejo haré control sin tregua. ¡Ibagué merece sonar más fuerte!",
+        "¿Tu barrio sin agua y el recibo por las nubes? El IBAL pierde un millón de metros cúbicos de agua al mes y rompe las calles. Con treinta kilómetros por año de tubería nueva y telemetría digital, garantizaremos agua continua las veinticuatro horas. Desde el Concejo haré control sin tregua. ¡Ibagué merece sonar más fuerte!",
     ),
     (
         "audio_08.mp3",
@@ -318,7 +318,7 @@ GUIONES_CAMPANA_GEMINI_38 = [
         "audio_11_nota_voz_whatsapp_45s.mp3",
         47.5,
         "Warm, conversational, trustworthy Colombian male voice sending a personal WhatsApp voice note to a community leader friend.",
-        "¡Hola! Te habla John Polo. <short pause> Como hijo de esta tierra y con el orgullo de nuestras raíces campesinas, quiero compartirte una propuesta seria, estudiada y sin carreta para transformar a Ibagué desde el Concejo. Mientras otros improvisan o quieren seguir endeudando la ciudad, hemos construido un Plan de Siete Ejes con soluciones reales: primero, campo y comida justa con la Central de Acopio en la Calle diecinueve y cincuenta kilómetros por año de vías rurales con las Juntas. Segundo, agua sin mafias: treinta kilómetros por año de tubería nueva en el IBAL y fin del cartel de los valvuleros. Tercero, movilidad de verdad con el Cable Aéreo para Boquerón y la Comuna Dos, y el puente en Mirolindo. Y todo sin subir el Predial ni el ICA. <short pause> Ibagué tiene con qué. Es hora de creer. ¡Ibagué merece sonar más fuerte! Ayúdame compartiendo este mensaje con tu familia y tus vecinos.",
+        "¡Hola! Te habla John Polo. <short pause> Como hijo de esta tierra y con el orgullo de nuestras raíces campesinas, quiero compartirte una propuesta seria, estudiada y sin carreta para transformar a Ibagué desde el Concejo. Mientras otros improvisan o quieren seguir endeudando la ciudad, hemos construido un Plan de Siete Ejes con soluciones reales: primero, campo y comida justa con la Central de Acopio en la Calle diecinueve y cincuenta kilómetros por año de vías rurales con las Juntas. Segundo, agua continua y eficiente: treinta kilómetros por año de tubería nueva en el IBAL y telemetría digital para cuidar cada gota. Tercero, movilidad de verdad con el Cable Aéreo para Boquerón y la Comuna Dos, y el puente en Mirolindo. Y todo sin subir el Predial ni el ICA. <short pause> Ibagué tiene con qué. Es hora de creer. ¡Ibagué merece sonar más fuerte! Ayúdame compartiendo este mensaje con tu familia y tus vecinos.",
     ),
 ]
 

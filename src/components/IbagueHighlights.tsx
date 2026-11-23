@@ -35,7 +35,7 @@ export const IbagueHighlights: React.FC = () => {
             </span>
           </h2>
           <p className="mt-4 text-base sm:text-lg text-slate-300 font-medium">
-            De las 144 veredas y la Central de Acopio en la Calle 19 hasta los 2 Cables Aéreos, la Plaza 28 Modelo Concordia y la telemetría contra el cartel de valvuleros en el IBAL.
+            De las 144 veredas y la Central de Acopio en la Calle 19 hasta los 2 Cables Aéreos, la Plaza 28 Modelo Concordia y la renovación de 30 km/año con telemetría digital en el IBAL.
           </p>
         </div>
 

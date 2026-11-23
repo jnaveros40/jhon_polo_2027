@@ -32,7 +32,7 @@ export const CitizenMailbox: React.FC = () => {
     nombre: '',
     telefono: '',
     comunaId: '1',
-    tema: 'Eje 2: Agua, IBAL y Cartel de Valvuleros',
+    tema: 'Eje 2: Agua, IBAL (30 km/año) y Telemetría Digital',
     mensaje: ''
   });
 
@@ -44,7 +44,7 @@ export const CitizenMailbox: React.FC = () => {
 
   const TEMAS = [
     { label: 'Eje 1: Campo, 144 Veredas, Vías Terciarias y Acopio Cll 19', icon: Store, color: 'text-emerald-600' },
-    { label: 'Eje 2: Agua, IBAL (30 km/año) y Cartel de Valvuleros', icon: Droplets, color: 'text-blue-600' },
+    { label: 'Eje 2: Agua, IBAL (30 km/año) y Telemetría Digital', icon: Droplets, color: 'text-blue-600' },
     { label: 'Eje 3: Cargas Urbanísticas, Licencias y Cuenca Combeima', icon: Building2, color: 'text-amber-600' },
     { label: 'Eje 4: INFIBAGUÉ 75/25, Alumbrado LED y Banca Juvenil', icon: Briefcase, color: 'text-red-600' },
     { label: 'Eje 5: Plaza 28 (Modelo Concordia) y Biofábrica Municipal', icon: Utensils, color: 'text-purple-600' },
@@ -122,7 +122,7 @@ export const CitizenMailbox: React.FC = () => {
             </span>
           </h2>
           <p className="mt-4 text-base sm:text-lg text-slate-600 font-medium">
-            Selecciona tu comuna o sector rural para conocer el <strong className="text-slate-900">Proyecto Estratégico 2027–2030</strong> asignado a tu territorio y envíanos tu reporte sobre pérdidas del IBAL, ’valvuleros’, vías, microtráfico o empleo juvenil.
+            Selecciona tu comuna o sector rural para conocer el <strong className="text-slate-900">Proyecto Estratégico 2027–2030</strong> asignado a tu territorio y envíanos tu reporte sobre fugas y cortes del IBAL, vías, microtráfico o empleo juvenil.
           </p>
         </div>
 
