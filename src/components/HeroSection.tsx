@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowRight, Users, Sparkles, CheckCircle2, MessageCircle, MapPin, Flame, Eye } from 'lucide-react';
 import { CAMPAIGN_INFO, buildWhatsAppUrl } from '../data/campaignData';
+import { CaballoLiberal } from './CaballoLiberal';
 
 export const HeroSection: React.FC = () => {
   const [photoVariant, setPhotoVariant] = useState<'creer' | 'territorio'>('creer');
@@ -24,12 +25,21 @@ export const HeroSection: React.FC = () => {
           {/* Columna Izquierda: Mensaje y Titulares */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
 
-            {/* Badges de Precandidatura y Localidad */}
+            {/* Badges de Precandidatura, Partido Liberal y Localidad */}
             <div className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wide bg-red-700 text-white shadow-sm">
                 <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
                 Concejo de Ibagué 2027
               </span>
+
+              {/* Badge Oficial del Partido Liberal con Caballo Animado */}
+              <div 
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-white text-red-700 border-2 border-red-600/50 shadow-xs hover:border-red-600 hover:bg-red-50 transition-all cursor-pointer group"
+                title="Candidatura oficial respaldada por el Partido Liberal Colombiano"
+              >
+                <CaballoLiberal size="xs" animated={true} interactive={false} />
+                <span>Partido Liberal</span>
+              </div>
 
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
                 <MapPin className="w-3.5 h-3.5 text-emerald-700" />
@@ -193,6 +203,17 @@ export const HeroSection: React.FC = () => {
 
                   <div className="absolute top-3 right-3 bg-yellow-400 text-slate-950 text-xs font-black px-2.5 py-1 rounded-full shadow-lg">
                     2027
+                  </div>
+
+                  {/* Badge Flotante del Partido Liberal con Caballo Animado */}
+                  <div 
+                    className="absolute top-12 right-3 z-10 bg-white/95 backdrop-blur-md px-2 py-1 rounded-xl shadow-lg border border-red-500/40 flex items-center gap-1 group cursor-pointer hover:scale-105 transition-transform"
+                    title="Candidatura avalada por el Partido Liberal Colombiano"
+                  >
+                    <CaballoLiberal size="xs" animated={true} />
+                    <span className="text-[9px] font-black uppercase text-red-700 leading-tight text-left">
+                      Partido<br />Liberal
+                    </span>
                   </div>
 
                   {/* Resumen inferior sobre la imagen */}

@@ -41,3 +41,58 @@
   background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
 }
 
+/* Animaciones para el Caballo Liberal y la Bandera */
+@keyframes horseGallop {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    filter: drop-shadow(0 4px 8px rgba(211, 47, 47, 0.35));
+  }
+  25% {
+    transform: translateY(-6px) rotate(-1.5deg) scale(1.02);
+    filter: drop-shadow(0 8px 16px rgba(211, 47, 47, 0.55));
+  }
+  50% {
+    transform: translateY(-2px) rotate(1deg) scale(1.01);
+    filter: drop-shadow(0 6px 12px rgba(211, 47, 47, 0.45));
+  }
+  75% {
+    transform: translateY(-8px) rotate(-0.8deg) scale(1.03);
+    filter: drop-shadow(0 10px 20px rgba(211, 47, 47, 0.65));
+  }
+}
+
+@keyframes horseGallopFast {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  30% {
+    transform: translateY(-10px) rotate(-3deg) scale(1.06);
+  }
+  60% {
+    transform: translateY(-4px) rotate(2deg) scale(1.03);
+  }
+}
+
+@keyframes pulseRedAura {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(211, 47, 47, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(211, 47, 47, 0.7);
+  }
+}
+
+.animate-horse-gallop {
+  animation: horseGallop 3.8s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.animate-horse-fast {
+  animation: horseGallopFast 1.8s ease-in-out infinite;
+}
+
+.pulse-red-aura {
+  animation: pulseRedAura 2.5s infinite;
+}
+
+

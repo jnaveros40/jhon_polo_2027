@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { VOLUNTEER_ROLES, COMUNAS_IBAGUE, CAMPAIGN_INFO, buildWhatsAppUrl } from '../data/campaignData';
+import { CaballoLiberal } from './CaballoLiberal';
 
 export const VolunteersSection: React.FC = () => {
   // Estado para el registro de voluntario
@@ -158,6 +159,10 @@ export const VolunteersSection: React.FC = () => {
     ctx.fillText('✓ REGISTRO CIUDADANO VERIFICADO', 450, 760);
 
     // Footer de la Tarjeta
+    ctx.fillStyle = '#EF4444';
+    ctx.font = 'bold 20px Montserrat, sans-serif';
+    ctx.fillText('AVAL OFICIAL • PARTIDO LIBERAL COLOMBIANO', 450, 865);
+
     ctx.fillStyle = '#F8FAFC';
     ctx.font = 'bold 26px Montserrat, sans-serif';
     ctx.fillText('JOHN POLO AL CONCEJO DE IBAGUÉ 2027', 450, 910);
@@ -448,12 +453,20 @@ export const VolunteersSection: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col items-end">
-                  <span className="text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <Shield className="w-3 h-3" />
-                    OFICIAL
-                  </span>
-                  <span className="text-[9px] text-slate-400 mt-0.5">#EsHoraDeCreer</span>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-red-950/80 border border-red-500/40">
+                    <CaballoLiberal size="xs" animated={true} />
+                    <span className="text-[10px] font-black uppercase text-red-300">
+                      Partido Liberal
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <Shield className="w-3 h-3" />
+                      OFICIAL
+                    </span>
+                    <span className="text-[9px] text-slate-400 mt-0.5">#EsHoraDeCreer</span>
+                  </div>
                 </div>
               </div>
 

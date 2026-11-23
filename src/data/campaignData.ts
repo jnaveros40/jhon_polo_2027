@@ -30,7 +30,19 @@ export const CAMPAIGN_INFO = {
     heroCandidate: "/images/candidato-hero.jpg",
     actionCandidate: "/images/candidato-accion.jpg",
     bannerLandscape: "/images/ibague-banner.jpg",
-    altPoster: "/images/ibague-creer.jpg"
+    altPoster: "/images/ibague-creer.jpg",
+    caballoLiberal: "/images/caballo-liberal.svg",
+    caballoLiberalJpg: "/images/caballo-liberal.jpg"
+  },
+
+  // Partido Político
+  party: {
+    name: "Partido Liberal Colombiano",
+    short: "Partido Liberal",
+    slogan: "Por la defensa de los derechos, el empleo digno y las oportunidades para los jóvenes",
+    symbolName: "El Jinete y Caballo Liberal con la Bandera Roja",
+    svg: "/images/caballo-liberal.svg",
+    jpg: "/images/caballo-liberal.jpg"
   },
 
   // Color Palette Tokens

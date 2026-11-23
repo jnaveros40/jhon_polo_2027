@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Menu, X, MessageCircle, Download, Check } from 'lucide-react';
 import { CAMPAIGN_INFO, buildWhatsAppUrl } from '../data/campaignData';
 import { usePWA } from '../hooks/usePWA';
+import { CaballoLiberal } from './CaballoLiberal';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,6 +71,9 @@ export const Navbar: React.FC = () => {
                   <span className="bg-red-100 text-red-700 text-[10px] font-bold px-1.5 py-0.2 rounded-full border border-red-200">
                     2027
                   </span>
+                  <span className="hidden sm:inline-flex items-center gap-1 bg-red-700 text-white text-[10px] font-black px-1.5 py-0.2 rounded-full ml-1 shadow-xs">
+                    Liberal
+                  </span>
                 </div>
               </div>
             </a>
@@ -87,8 +91,18 @@ export const Navbar: React.FC = () => {
               ))}
             </nav>
 
-            {/* Desktop Actions (PWA + WhatsApp) */}
+            {/* Desktop Actions (PWA + WhatsApp + Partido Liberal) */}
             <div className="hidden sm:flex items-center gap-3">
+              {/* Sello Partido Liberal */}
+              <div 
+                className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 bg-red-50/80 rounded-xl border border-red-200 shadow-xs cursor-pointer hover:bg-red-100 transition-colors"
+                title="Aval Oficial: Partido Liberal Colombiano"
+              >
+                <CaballoLiberal size="xs" animated={true} interactive={false} />
+                <span className="text-xs font-black text-red-700 uppercase tracking-wider">
+                  Partido Liberal
+                </span>
+              </div>
               {/* Botón PWA si no está instalada */}
               {!isInstalled && (
                 <button

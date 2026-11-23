@@ -7,6 +7,7 @@ import {
   Facebook
 } from 'lucide-react';
 import { CAMPAIGN_INFO, buildWhatsAppUrl } from '../data/campaignData';
+import { CaballoLiberal } from './CaballoLiberal';
 
 export const Footer: React.FC = () => {
   return (
@@ -139,6 +140,30 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
+        </div>
+
+        {/* Aval Oficial Partido Liberal Colombiano con Caballo Animado */}
+        <div className="my-8 p-5 sm:p-6 rounded-3xl bg-slate-900 border border-red-800/60 shadow-xl flex flex-col md:flex-row items-center justify-between gap-5">
+          <div className="flex items-center gap-4 text-center md:text-left">
+            <CaballoLiberal size="sm" animated={true} />
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-950 text-red-400 border border-red-800 text-[10px] font-black uppercase tracking-wider mb-1">
+                <span>Aval Oficial</span>
+              </div>
+              <h5 className="text-base sm:text-lg font-display font-black text-white">
+                Partido Liberal Colombiano • John Polo al Concejo 2027
+              </h5>
+              <p className="text-xs text-slate-400 mt-0.5 max-w-xl">
+                Liderazgo con vocación social, impulso al primer empleo para los jóvenes y control riguroso a los servicios públicos de Ibagué.
+              </p>
+            </div>
+          </div>
+          <a
+            href="#voluntarios"
+            className="px-5 py-2.5 bg-red-700 hover:bg-red-800 text-white font-display font-bold text-xs rounded-xl shadow-brand transition-all shrink-0 active:scale-95"
+          >
+            Sumarme al Movimiento
+          </a>
         </div>
 
         {/* Aviso Legal & Créditos */}
