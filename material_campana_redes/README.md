@@ -20,5 +20,11 @@ Esta carpeta contiene todo el material publicitario, guiones de video, copies de
    Guía de pauta publicitaria en Facebook e Instagram Ads con segmentación geográfica por comunas de Ibagué, rangos de edad, presupuestos sugeridos y enlaces a WhatsApp.
 
 5. **`05_PLANTILLAS_VISUALES_Y_DISEÑO.html`**  
-   Tablero visual interactivo que puedes abrir en cualquier navegador web para visualizar plantillas gráficas oficiales (post 1:1, stories 9:16) con el logotipo de John Polo y el caballo del Partido Liberal.
+   Tablero visual interactivo que puedes abrir en cualquier navegador web para visualizar y descargar los 5 posts oficiales con sus imágenes generadas y copiar sus textos en un clic.
+
+6. **`06_ESTUDIO_VIDEOS_PUBLICITARIOS.html`** y carpeta **`videos_publicitarios/`**  
+   Central de reproducción y descarga con **3 videos publicitarios en formato `.mp4` (H.264 + audio musical AAC)** listos para publicar en TikTok, Instagram Reels, Stories y Facebook Ads:
+   - `video_01_identidad_caballo_sonar_fuerte_9x16.mp4`: Animación en 3 actos con el Caballo del Partido Liberal ondeando la bandera, el banner *"Ibagué merece sonar más fuerte"* con ecualizador musical y las 6 propuestas de John Polo Concejo 2027.
+   - `video_02_john_polo_poster_oficial_animado_9x16.mp4`: Animación 2.5D utilizando la **fotografía real del póster oficial de John Polo** (gorra roja, gafas y pulgar arriba), el Caballo Liberal ondeando su bandera y un resaltador luminoso recorriendo sus propuestas.
+   - `video_03_spot_campana_feed_1x1.mp4`: Spot cuadrado 1:1 para el Feed de Instagram y Facebook Ads.
 
