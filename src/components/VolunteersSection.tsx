@@ -437,11 +437,16 @@ export const VolunteersSection: React.FC = () => {
 
               {/* Cabecera de la Tarjeta */}
               <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-5 relative z-10">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5">
                   <img
                     src={CAMPAIGN_INFO.images.logo}
                     alt="Logo JP"
                     className="w-10 h-10 rounded-full border border-yellow-400 bg-white p-0.5 object-contain"
+                  />
+                  <img
+                    src={CAMPAIGN_INFO.party.gifSello}
+                    alt="Sello Animado Bandera Ibagué"
+                    className="w-11 h-11 rounded-full border-2 border-yellow-400 bg-white object-contain shadow-md"
                   />
                   <div>
                     <p className="text-[10px] font-extrabold uppercase tracking-widest text-yellow-400">
@@ -454,10 +459,10 @@ export const VolunteersSection: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-red-950/80 border border-red-500/40">
-                    <CaballoLiberal size="xs" animated={true} />
-                    <span className="text-[10px] font-black uppercase text-red-300">
-                      Partido Liberal
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-2xl bg-red-950/90 border border-red-500/50">
+                    <CaballoLiberal size="xs" variant="tricolor" />
+                    <span className="text-[10px] font-black uppercase text-red-200 leading-tight">
+                      Partido<br />Liberal
                     </span>
                   </div>
                   <div className="flex flex-col items-end">

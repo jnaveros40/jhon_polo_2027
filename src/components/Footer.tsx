@@ -158,10 +158,13 @@ export const Footer: React.FC = () => {
 
         </div>
 
-        {/* Aval Oficial Partido Liberal Colombiano con Caballo Animado */}
+        {/* Aval Oficial Partido Liberal Colombiano con Caballo Galopando y Sello Tricolor */}
         <div className="my-8 p-5 sm:p-6 rounded-3xl bg-slate-900 border border-red-800/60 shadow-xl flex flex-col md:flex-row items-center justify-between gap-5">
           <div className="flex items-center gap-4 text-center md:text-left">
-            <CaballoLiberal size="sm" animated={true} />
+            <div className="flex items-center gap-2 shrink-0">
+              <CaballoLiberal size="md" variant="sello" />
+              <CaballoLiberal size="sm" variant="red" />
+            </div>
             <div>
               <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-950 text-red-400 border border-red-800 text-[10px] font-black uppercase tracking-wider mb-1">
                 <span>Aval Oficial • Partido Liberal Colombiano</span>

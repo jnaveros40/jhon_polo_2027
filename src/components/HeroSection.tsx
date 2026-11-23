@@ -4,7 +4,7 @@ import { CAMPAIGN_INFO, buildWhatsAppUrl } from '../data/campaignData';
 import { CaballoLiberal } from './CaballoLiberal';
 
 export const HeroSection: React.FC = () => {
-  const [photoVariant, setPhotoVariant] = useState<'creer' | 'territorio'>('creer');
+  const [photoVariant, setPhotoVariant] = useState<'creer' | 'territorio' | 'caballo'>('creer');
 
   const whatsAppHeroLink = buildWhatsAppUrl(
     `¡Hola John Fredy Polo! Leí tu Documento Maestro 2027-2030 ("Ibagué Sostenible, Industrial, Segura y Conectada") y quiero sumarme a tu equipo.`
@@ -32,13 +32,15 @@ export const HeroSection: React.FC = () => {
                 {CAMPAIGN_INFO.campaignTitle}
               </span>
 
-              {/* Badge Oficial del Partido Liberal con Caballo Animado */}
+              {/* Badge Oficial del Partido Liberal con Caballo Galopando y Sello Tricolor */}
               <div
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-white text-red-700 border-2 border-red-600/50 shadow-xs hover:border-red-600 hover:bg-red-50 transition-all cursor-pointer group"
-                title="Candidatura oficial respaldada por el Partido Liberal Colombiano"
+                onClick={() => setPhotoVariant('caballo')}
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black bg-white text-red-700 border-2 border-red-600/50 shadow-xs hover:border-red-600 hover:bg-red-50 transition-all cursor-pointer group"
+                title="Haz clic para ver la animación completa del Caballo Galopando y el Sello de Ibagué"
               >
-                <CaballoLiberal size="xs" animated={true} interactive={false} />
-                <span>Partido Liberal</span>
+                <CaballoLiberal size="xs" variant="sello" interactive={false} />
+                <CaballoLiberal size="xs" variant="red" interactive={false} />
+                <span>Partido Liberal • Ibagué</span>
               </div>
 
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
@@ -155,16 +157,16 @@ export const HeroSection: React.FC = () => {
 
               <div className="relative bg-white p-3 rounded-2xl shadow-2xl border border-slate-200">
 
-                {/* Selector de Fotografía Oficial */}
-                <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
+                {/* Selector de Fotografía y Símbolo Animado Oficial */}
+                <div className="flex flex-wrap items-center justify-between gap-1 pb-2 mb-2 border-b border-slate-100">
                   <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">
-                    Afiches Oficiales
+                    Identidad Oficial
                   </span>
                   <div className="flex items-center gap-1">
                     <button
                       type="button"
                       onClick={() => setPhotoVariant('creer')}
-                      className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 ${
+                      className={`px-2 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 ${
                         photoVariant === 'creer'
                           ? 'bg-red-700 text-white shadow-xs'
                           : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -176,7 +178,7 @@ export const HeroSection: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setPhotoVariant('territorio')}
-                      className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 ${
+                      className={`px-2 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 ${
                         photoVariant === 'territorio'
                           ? 'bg-red-700 text-white shadow-xs'
                           : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -185,19 +187,38 @@ export const HeroSection: React.FC = () => {
                       <Eye className="w-3 h-3" />
                       <span>En Territorio</span>
                     </button>
+                    <button
+                      type="button"
+                      onClick={() => setPhotoVariant('caballo')}
+                      className={`px-2 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1 ${
+                        photoVariant === 'caballo'
+                          ? 'bg-red-700 text-white shadow-xs'
+                          : 'bg-amber-100 text-amber-900 hover:bg-amber-200'
+                      }`}
+                    >
+                      <span>🐎 Galope & Sello</span>
+                    </button>
                   </div>
                 </div>
 
-                {/* Imagen del Candidato */}
-                <div className="relative rounded-xl overflow-hidden bg-slate-900 aspect-[4/5] group">
+                {/* Imagen del Candidato o Símbolo Animado Galopando */}
+                <div className="relative rounded-xl overflow-hidden bg-slate-950 aspect-[4/5] group">
                   <img
-                    src={photoVariant === 'creer' ? CAMPAIGN_INFO.images.actionCandidate : CAMPAIGN_INFO.images.heroCandidate}
+                    src={
+                      photoVariant === 'creer'
+                        ? CAMPAIGN_INFO.images.actionCandidate
+                        : photoVariant === 'territorio'
+                        ? CAMPAIGN_INFO.images.heroCandidate
+                        : CAMPAIGN_INFO.party.gifCard
+                    }
                     alt="John Fredy Polo Campos - Concejo de Ibagué 2027-2030"
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    className={`w-full h-full ${
+                      photoVariant === 'caballo' ? 'object-contain p-2' : 'object-cover object-top'
+                    } group-hover:scale-105 transition-transform duration-500`}
                     loading="eager"
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent pointer-events-none" />
 
                   <div className="absolute top-3 left-3 bg-red-700/90 backdrop-blur-md text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-lg border border-red-500">
                     JOHN FREDY POLO • CONCEJO
@@ -207,14 +228,26 @@ export const HeroSection: React.FC = () => {
                     2027–2030
                   </div>
 
-                  {/* Badge Flotante del Partido Liberal con Caballo Animado */}
+                  {/* Sello Circular Tricolor + Caballo Galopando Flotante sobre la Imagen */}
                   <div
-                    className="absolute top-12 right-3 z-10 bg-white/95 backdrop-blur-md px-2 py-1 rounded-xl shadow-lg border border-red-500/40 flex items-center gap-1 group cursor-pointer hover:scale-105 transition-transform"
-                    title="Candidatura avalada por el Partido Liberal Colombiano"
+                    onClick={() => setPhotoVariant(photoVariant === 'caballo' ? 'creer' : 'caballo')}
+                    className="absolute top-12 right-3 z-10 bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-xl border-2 border-yellow-400 flex flex-col items-center gap-1 group cursor-pointer hover:scale-105 transition-transform"
+                    title="Sello Animado con la Bandera de Ibagué y Caballo Galopando"
                   >
-                    <CaballoLiberal size="xs" animated={true} />
-                    <span className="text-[9px] font-black uppercase text-red-700 leading-tight text-left">
-                      Partido<br />Liberal
+                    <div className="flex items-center gap-1">
+                      <img
+                        src={CAMPAIGN_INFO.party.gifSello}
+                        alt="Sello Bandera de Ibagué Caballo Galopando"
+                        className="w-12 h-12 rounded-full object-contain border border-red-500"
+                      />
+                      <img
+                        src={CAMPAIGN_INFO.party.gif}
+                        alt="Caballo Liberal Galopando"
+                        className="w-9 h-14 object-contain"
+                      />
+                    </div>
+                    <span className="text-[9px] font-black uppercase text-red-700 leading-none text-center">
+                      Partido Liberal • Ibagué
                     </span>
                   </div>
 

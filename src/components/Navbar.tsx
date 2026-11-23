@@ -33,26 +33,21 @@ export const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
 
-            {/* Emblema y Nombre de Candidato */}
+            {/* Emblema, Sello Circular Animado (Galope + Bandera de Ibagué) y Nombre */}
             <a href="#inicio" className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-red-500 rounded-lg p-1">
-              <div className="relative">
+              <div className="relative flex items-center -space-x-2">
                 <img
                   src={CAMPAIGN_INFO.images.logo}
                   alt="Logo John Fredy Polo Campos Concejo de Ibagué 2027-2030"
-                  className="w-12 h-12 md:w-14 md:h-14 object-contain rounded-full border-2 border-red-600 shadow-sm group-hover:scale-105 transition-transform"
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    target.style.display = 'none';
-                    const parent = target.parentElement;
-                    if (parent) {
-                      const fallback = document.createElement('div');
-                      fallback.className = 'w-12 h-12 bg-red-600 text-white font-extrabold flex items-center justify-center rounded-full text-lg shadow-sm';
-                      fallback.innerText = 'JP';
-                      parent.appendChild(fallback);
-                    }
-                  }}
+                  className="w-11 h-11 md:w-13 md:h-13 object-contain rounded-full border-2 border-red-600 shadow-sm group-hover:scale-105 transition-transform bg-white z-10"
                 />
-                <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5">
+                <img
+                  src={CAMPAIGN_INFO.party.gifSello}
+                  alt="Sello Caballo Galopando con Bandera de Ibagué"
+                  className="w-12 h-12 md:w-14 md:h-14 object-contain rounded-full border-2 border-yellow-400 shadow-md group-hover:scale-110 transition-transform bg-white z-20"
+                  title="Sello Animado: Caballo Galopando con la Bandera de Ibagué (Amarillo, Verde, Rojo)"
+                />
+                <span className="absolute -bottom-1 -right-1 z-30 flex h-3.5 w-3.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-green-600"></span>
                 </span>
@@ -93,13 +88,18 @@ export const Navbar: React.FC = () => {
             {/* Desktop Actions (PDF + PWA + WhatsApp + Partido Liberal) */}
             <div className="hidden sm:flex items-center gap-2.5">
               <div
-                className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 bg-red-50/80 rounded-xl border border-red-200 shadow-xs cursor-pointer hover:bg-red-100 transition-colors"
-                title="Aval Oficial: Partido Liberal Colombiano"
+                className="hidden md:flex items-center gap-2 px-3 py-1 bg-red-50/90 rounded-xl border border-red-200 shadow-xs cursor-pointer hover:bg-red-100 transition-colors"
+                title="Aval Oficial: Partido Liberal Colombiano - Caballo Galopando"
               >
-                <CaballoLiberal size="xs" animated={true} interactive={false} />
-                <span className="text-xs font-black text-red-700 uppercase tracking-wider">
-                  Partido Liberal
-                </span>
+                <CaballoLiberal size="xs" variant="red" interactive={false} />
+                <div className="flex flex-col leading-tight">
+                  <span className="text-[11px] font-black text-red-700 uppercase tracking-wider">
+                    Partido Liberal
+                  </span>
+                  <span className="text-[9px] font-bold text-emerald-700">
+                    Ibagué 2027
+                  </span>
+                </div>
               </div>
 
               <a
