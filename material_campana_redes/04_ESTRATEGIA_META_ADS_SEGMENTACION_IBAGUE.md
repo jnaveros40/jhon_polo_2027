@@ -34,7 +34,7 @@
 ---
 
 ### Campaña C: «Red de Voluntarios & Tarjeta de Apoyo Digital»
-* **Objetivo:** Conversiones / Tráfico al sitio web (`www.johnpolo2027.com`).
+* **Objetivo:** Conversiones / Tráfico al sitio web (`johnpoloconcejo2027.vercel.app`).
 * **Segmentación Geográfica:** Todo el municipio de Ibagué + Corregimientos.
 * **Edad:** 18 a 55 años.
 * **Intereses clave:** Política en Colombia, Partido Liberal Colombiano, Participación ciudadana, Voluntariado social.

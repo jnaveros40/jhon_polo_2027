@@ -27,7 +27,7 @@ export const CAMPAIGN_INFO = {
   // Official Contacts & Socials
   whatsappNumber: "573025091063",
   whatsappDisplay: "+57 (302) 509-1063",
-  email: "contacto@johnpolo2027.com",
+  email: "contacto@johnpoloconcejo2027.vercel.app",
   socials: {
     instagram: "https://www.instagram.com/johnfredypolocampos",
     tiktok: "https://www.tiktok.com/@john.fredy.polo?lang=es",

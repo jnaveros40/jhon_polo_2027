@@ -169,7 +169,7 @@ export const VolunteersSection: React.FC = () => {
 
     ctx.fillStyle = '#64748B';
     ctx.font = '500 18px Inter, sans-serif';
-    ctx.fillText('www.johnpolo2027.com • #IbaguéSuenaMásFuerte • #EsHoraDeCreer', 450, 960);
+    ctx.fillText('johnpoloconcejo2027.vercel.app • #IbaguéSuenaMásFuerte • #EsHoraDeCreer', 450, 960);
 
     // Borde inferior tricolor
     ctx.fillStyle = '#D32F2F';
@@ -202,7 +202,7 @@ export const VolunteersSection: React.FC = () => {
   const shareCardWhatsApp = () => {
     const text = `¡Hola! Ya tengo mi tarjeta de apoyo oficial a John Polo para el Concejo de Ibagué 2027.\n\n` +
       `Soy ${cardName || 'un ciudadano'} de la ${cardComuna} y creo firmemente que Ibagué merece sonar más fuerte.\n` +
-      `Genera tu tarjeta tú también y conoce sus propuestas aquí: https://johnpolo2027.com`;
+      `Genera tu tarjeta tú también y conoce sus propuestas aquí: https://johnpoloconcejo2027.vercel.app`;
 
     window.open(buildWhatsAppUrl(text), '_blank');
   };
@@ -494,7 +494,7 @@ export const VolunteersSection: React.FC = () => {
                   <Heart className="w-3.5 h-3.5 fill-current" />
                   Voluntario Oficial
                 </span>
-                <span>www.johnpolo2027.com</span>
+                <span>johnpoloconcejo2027.vercel.app</span>
               </div>
 
             </div>

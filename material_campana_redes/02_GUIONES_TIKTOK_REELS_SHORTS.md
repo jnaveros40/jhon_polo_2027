@@ -30,7 +30,7 @@
 | **0:00 - 0:03** | Plano detalle a una llave de agua que gotea o no sale nada al abrirla. | Sonido de tubería vacía. Cara de frustración de un vecino. | *«Esto no puede seguir siendo normal en Ibagué.»* | 💧 ¿HASTA CUÁNDO SIN AGUA? |
 | **0:03 - 0:14** | Plano medio de John Polo junto a una madre de familia con baldes. | Muestra los recipientes llenos de agua almacenada. | *«Estamos en la capital rodeada por el río Combeima y el río Cocora, pero en barrios como El Topacio, La Pola o el Sur pasan hasta 3 días sin una gota de agua potable.»* | 🚫 RACIONAMIENTOS CONSTANTES<br>📈 PERO LA FACTURA SÍ LLEGA PUNTUAL |
 | **0:14 - 0:28** | John Polo mirando a cámara con tono firme y constructivo. | Transición con el sello del Partido Liberal. | *«En el Concejo no vamos a ser cómplices del silencio. Exigiremos cuentas claras al IBAL, control a los cronogramas de acueducto complementario y veedurías ciudadanas en cada comuna.»* | ⚖️ CONTROL POLÍTICO IMPLACABLE AL IBAL |
-| **0:28 - 0:42** | Plano medio con la mano extendida. | Muestra la dirección web en pantalla. | *«Si en tu barrio sufren por agua o mal alcantarillado, entra a johnpolo2027.com y llena el buzón ciudadano. Tu voz resonará en el Concejo.»* | 📝 REPORTA TU BARRIO AQUÍ 👇<br>www.johnpolo2027.com |
+| **0:28 - 0:42** | Plano medio con la mano extendida. | Muestra la dirección web en pantalla. | *«Si en tu barrio sufren por agua o mal alcantarillado, entra a johnpoloconcejo2027.vercel.app y llena el buzón ciudadano. Tu voz resonará en el Concejo.»* | 📝 REPORTA TU BARRIO AQUÍ 👇<br>johnpoloconcejo2027.vercel.app |
 
 ---
 
@@ -57,7 +57,7 @@
 | Tiempo | Plano de Cámara | Acción / Visual | Diálogo | Textos en Pantalla |
 | :--- | :--- | :--- | :--- | :--- |
 | **0:00 - 0:04** | John Polo sosteniendo su celular mostrando la pantalla con la app. | Sonido de notificación. | *«¿Quieres apoyar el cambio en Ibagué desde tu propio celular? Mira lo fácil que es.»* | 📲 TU TARJETA DIGITAL EN 30 SEG |
-| **0:04 - 0:15** | Captura de pantalla de la app en la sección "Tarjeta Digital de Apoyo". | Se ve escribiendo el nombre y seleccionando "Comuna 7". | *«Entras a johnpolo2027.com, pones tu nombre, eliges tu comuna y el sistema genera al instante tu credencial ciudadana con el sello oficial.»* | ✏️ NOMBRE + COMUNA = LISTO |
+| **0:04 - 0:15** | Captura de pantalla de la app en la sección "Tarjeta Digital de Apoyo". | Se ve escribiendo el nombre y seleccionando "Comuna 7". | *«Entras a johnpoloconcejo2027.vercel.app, pones tu nombre, eliges tu comuna y el sistema genera al instante tu credencial ciudadana con el sello oficial.»* | ✏️ NOMBRE + COMUNA = LISTO |
 | **0:15 - 0:24** | La tarjeta se genera con confeti y se muestra el botón de descarga. | Se ve la tarjeta en la pantalla con el logo y el caballo del Partido Liberal. | *«La descargas en un clic en alta calidad y la subes a tus estados de WhatsApp o historias de Instagram para contagiar a tus amigos y vecinos.»* | 🎉 DESCARGA & COMPARTE EN ESTADOS |
-| **0:24 - 0:30** | John Polo sonriendo a cámara. | Cierre con llamada al perfil. | *«Ve ya mismo al enlace de mi biografía y genera la tuya. ¡Demostremos que en Ibagué somos más los que creemos!»* | 🔗 LINK EN BIO: johnpolo2027.com |
+| **0:24 - 0:30** | John Polo sonriendo a cámara. | Cierre con llamada al perfil. | *«Ve ya mismo al enlace de mi biografía y genera la tuya. ¡Demostremos que en Ibagué somos más los que creemos!»* | 🔗 LINK EN BIO: johnpoloconcejo2027.vercel.app |
 

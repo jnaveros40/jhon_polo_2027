@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://johnpolo2027.com/sitemap.xml
-
+# Mapa del sitio oficial de John Polo (John Fredy Polo Campos) - Concejo de Ibagué 2027-2030
+Sitemap: https://johnpoloconcejo2027.vercel.app/sitemap.xml
