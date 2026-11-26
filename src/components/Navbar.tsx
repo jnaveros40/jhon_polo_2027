@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
-import { Menu, X, MessageCircle, Download, Check, FileText, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Menu, X, MessageCircle, Download, Check, FileText, ChevronRight, ShieldCheck } from 'lucide-react';
 import { CAMPAIGN_INFO, buildWhatsAppUrl } from '../data/campaignData';
 import { usePWA } from '../hooks/usePWA';
+import { openLegalModal } from './LegalPrivacyModal';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { isInstalled, installPwa } = usePWA();
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isOpen]);
 
   const navLinks = [
     { name: 'Inicio', href: '#inicio' },
@@ -70,7 +81,9 @@ export const Navbar: React.FC = () => {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-slate-800 hover:text-red-700 bg-slate-100 hover:bg-red-50 border border-slate-200/80 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all font-bold text-sm"
-              aria-label="Abrir menú de navegación"
+              aria-label={isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'}
+              aria-expanded={isOpen}
+              aria-controls="main-navigation-drawer"
             >
               <span className="hidden sm:inline text-xs font-extrabold uppercase tracking-wider">
                 Menú
@@ -87,7 +100,12 @@ export const Navbar: React.FC = () => {
             {/* Click fuera para cerrar */}
             <div className="flex-1" onClick={handleLinkClick} />
 
-            <div className="w-full max-w-sm bg-white h-[calc(100vh-86px)] shadow-2xl border-l border-slate-200 flex flex-col justify-between overflow-y-auto p-5 animate-in slide-in-from-right duration-200">
+            <div
+              id="main-navigation-drawer"
+              role="dialog"
+              aria-label="Menú principal de navegación"
+              className="w-full max-w-sm bg-white h-[calc(100vh-86px)] shadow-2xl border-l border-slate-200 flex flex-col justify-between overflow-y-auto p-5 animate-in slide-in-from-right duration-200"
+            >
               <div className="space-y-4">
                 {/* Resumen superior del Drawer */}
                 <div className="p-3.5 bg-red-50 rounded-2xl border border-red-100 flex items-center justify-between">
@@ -167,6 +185,19 @@ export const Navbar: React.FC = () => {
                   <MessageCircle className="w-5 h-5 fill-current shrink-0" />
                   <span>Escríbele a John por WhatsApp</span>
                 </a>
+
+                {/* Botón Centro de Privacidad, Habeas Data y Borrar Mis Datos */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleLinkClick();
+                    openLegalModal('privacidad');
+                  }}
+                  className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl font-bold text-xs text-slate-600 hover:text-red-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all"
+                >
+                  <ShieldCheck className="w-4 h-4 text-red-600 shrink-0" />
+                  <span>Privacidad (Ley 1581) & Borrar Mis Datos</span>
+                </button>
               </div>
             </div>
           </div>

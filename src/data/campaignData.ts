@@ -10,6 +10,7 @@ import {
 
 export const CAMPAIGN_INFO = {
   candidateName: "John Polo",
+  candidateShortName: "John Polo",
   candidateFullName: "John Fredy Polo Campos",
   candidateShort: "JP",
   campaignTitle: "Concejo de Ibagué 2027 – 2030",
@@ -23,10 +24,12 @@ export const CAMPAIGN_INFO = {
   manifesto: "Una ciudad con voz, oportunidades y futuro.",
   bioSummary: "John Fredy Polo Campos lidera una plataforma técnica y humana para el Concejo de Ibagué 2027–2030 por el Partido Liberal Colombiano: 7 Ejes Estratégicos de Transformación Territorial financiados mediante el Esquema 80-10-10 y liberación de caja interna, sin agravar el endeudamiento municipal.",
   masterDocPdfUrl: "/docs/DOCUMENTO_MAESTRO_JOHN_POLO_2027_2030.pdf",
+  website: "https://johnpoloconcejo2027.vercel.app",
 
   // Official Contacts & Socials
   whatsappNumber: "573025091063",
   whatsappDisplay: "+57 (302) 509-1063",
+  phoneDisplay: "+57 (302) 509-1063",
   email: "contacto@johnpoloconcejo2027.vercel.app",
   socials: {
     instagram: "https://www.instagram.com/johnfredypolocampos",

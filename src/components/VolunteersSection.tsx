@@ -13,6 +13,7 @@ import {
 import confetti from 'canvas-confetti';
 import { VOLUNTEER_ROLES, COMUNAS_IBAGUE, CAMPAIGN_INFO, buildWhatsAppUrl } from '../data/campaignData';
 import { CaballoLiberal } from './CaballoLiberal';
+import { openLegalModal } from './LegalPrivacyModal';
 
 export const VolunteersSection: React.FC = () => {
   // Estado para el registro de voluntario
@@ -20,6 +21,7 @@ export const VolunteersSection: React.FC = () => {
   const [volTelefono, setVolTelefono] = useState('');
   const [volComuna, setVolComuna] = useState('Comuna 1');
   const [selectedRole, setSelectedRole] = useState(VOLUNTEER_ROLES[0].id);
+  const [volConsent, setVolConsent] = useState(false);
   const [volSubmitted, setVolSubmitted] = useState(false);
 
   // Estado para la Tarjeta Digital de Apoyo
@@ -32,7 +34,7 @@ export const VolunteersSection: React.FC = () => {
 
   const handleVolunteerSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!volNombre.trim() || !volTelefono.trim()) return;
+    if (!volNombre.trim() || !volTelefono.trim() || !volConsent) return;
 
     setVolSubmitted(true);
     confetti({
@@ -357,6 +359,39 @@ export const VolunteersSection: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Casilla de Consentimiento Explícito y Mayoría de Edad (Puntos 1, 5, 8 y 14 - Sin premarcar) */}
+                <div className="p-3.5 rounded-2xl bg-white border border-slate-200">
+                  <div className="flex items-start gap-2.5">
+                    <input
+                      id="vol-consent"
+                      type="checkbox"
+                      checked={volConsent}
+                      onChange={(e) => setVolConsent(e.target.checked)}
+                      className="mt-1 h-4 w-4 rounded border-slate-300 text-red-700 focus:ring-red-600 cursor-pointer shrink-0"
+                      required
+                    />
+                    <label htmlFor="vol-consent" className="text-xs text-slate-700 leading-relaxed cursor-pointer">
+                      Confirmo que soy <strong>mayor de 18 años</strong> y autorizo de forma previa y expresa el tratamiento de mis datos personales (<strong>Ley 1581 de 2012</strong>) para coordinar actividades de voluntariado ciudadano, aceptando la{' '}
+                      <button
+                        type="button"
+                        onClick={() => openLegalModal('privacidad')}
+                        className="text-red-700 hover:text-red-800 font-extrabold underline"
+                      >
+                        Política de Privacidad
+                      </button>{' '}
+                      y los{' '}
+                      <button
+                        type="button"
+                        onClick={() => openLegalModal('terminos')}
+                        className="text-red-700 hover:text-red-800 font-extrabold underline"
+                      >
+                        Términos de Uso
+                      </button>
+                      . *
+                    </label>
+                  </div>
+                </div>
+
                 <button
                   type="submit"
                   className="w-full mt-2 flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-display font-extrabold text-sm text-white bg-red-700 hover:bg-red-800 shadow-brand active:scale-[0.99] transition-all"
@@ -395,10 +430,11 @@ export const VolunteersSection: React.FC = () => {
             {/* Controles rápidos de personalización de la tarjeta */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
               <div>
-                <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                <label htmlFor="cardNameInput" className="block text-[11px] font-bold text-slate-600 mb-1">
                   Tu nombre en la tarjeta:
                 </label>
                 <input
+                  id="cardNameInput"
                   type="text"
                   value={cardName}
                   onChange={(e) => setCardName(e.target.value)}
@@ -408,10 +444,11 @@ export const VolunteersSection: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                <label htmlFor="cardComunaSelect" className="block text-[11px] font-bold text-slate-600 mb-1">
                   Tu Comuna:
                 </label>
                 <select
+                  id="cardComunaSelect"
                   value={cardComuna}
                   onChange={(e) => setCardComuna(e.target.value)}
                   className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-red-600 bg-white"

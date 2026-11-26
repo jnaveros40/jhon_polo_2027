@@ -11,6 +11,17 @@
   body {
     @apply bg-slate-50 text-slate-900 font-sans antialiased overflow-x-hidden;
   }
+
+  /* Foco visible de alto contraste para navegación por teclado sin mouse (WCAG 2.1 AA / NTC 5854 - Punto 9) */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 3px solid #D32F2F;
+    outline-offset: 2px;
+  }
 }
 
 /* Custom scrollbar */

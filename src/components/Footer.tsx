@@ -5,10 +5,14 @@ import {
   MessageCircle,
   Instagram,
   Facebook,
-  FileText
+  FileText,
+  ShieldCheck,
+  Scale,
+  Trash2
 } from 'lucide-react';
 import { CAMPAIGN_INFO, buildWhatsAppUrl } from '../data/campaignData';
 import { CaballoLiberal } from './CaballoLiberal';
+import { openLegalModal } from './LegalPrivacyModal';
 
 export const Footer: React.FC = () => {
   return (
@@ -184,8 +188,59 @@ export const Footer: React.FC = () => {
           </a>
         </div>
 
+        {/* Ficha de Identificación del Responsable Legal, Habeas Data y Transparencia Electoral (Puntos 1, 3, 6, 8, 10, 12) */}
+        <div className="my-6 p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4 text-xs text-slate-400">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-3 border-b border-slate-800">
+            <div className="space-y-1">
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-yellow-400 flex items-center gap-1.5">
+                <Scale className="w-3.5 h-3.5" />
+                <span>Identificación del Responsable y Cumplimiento Normativo (República de Colombia)</span>
+              </span>
+              <p className="text-slate-300 font-semibold">
+                Responsable del Sitio y del Tratamiento de Datos: <strong className="text-white">{CAMPAIGN_INFO.candidateFullName}</strong> • Aval: <strong className="text-white">{CAMPAIGN_INFO.party.name}</strong> ({CAMPAIGN_INFO.campaignTitle}).
+              </p>
+              <p className="text-[11px] text-slate-400">
+                Domicilio: Ibagué, Tolima, Colombia • Canal Oficial Habeas Data (Ley 1581 de 2012): WhatsApp +{CAMPAIGN_INFO.whatsappNumber} ({CAMPAIGN_INFO.phoneDisplay}) • Publicidad política programática conforme a la Ley 1475 de 2011 y lineamientos del CNE. Plataforma cívica gratuita (sin pagos en línea) exclusiva para mayores de 18 años.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => openLegalModal('terminos')}
+                className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition-colors"
+              >
+                Términos y Condiciones
+              </button>
+              <button
+                type="button"
+                onClick={() => openLegalModal('privacidad')}
+                className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-yellow-400 font-bold text-xs border border-slate-700 flex items-center gap-1 transition-colors"
+              >
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>Política de Privacidad (Ley 1581)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => openLegalModal('responsable')}
+                className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition-colors"
+              >
+                Integraciones y Licencias
+              </button>
+              <button
+                type="button"
+                onClick={() => openLegalModal('borrar-datos')}
+                className="px-3 py-2 rounded-xl bg-emerald-950 hover:bg-emerald-900 text-emerald-300 font-extrabold text-xs border border-emerald-700/60 flex items-center gap-1 transition-colors"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Borrar Mis Datos</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* Aviso Legal & Créditos */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 text-center md:text-left">
+        <div className="pt-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 text-center md:text-left">
           <div>
             <p className="font-semibold text-slate-400">
               © 2026 - 2030 Plataforma Oficial {CAMPAIGN_INFO.candidateFullName} — Concejo de Ibagué.

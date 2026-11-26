@@ -14,10 +14,12 @@ import {
   Compass,
   ShieldCheck,
   Building2,
-  MessageCircle
+  MessageCircle,
+  Trash2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { COMUNAS_IBAGUE, buildWhatsAppUrl } from '../data/campaignData';
+import { openLegalModal, clearAllLocalUserData } from './LegalPrivacyModal';
 
 interface FormState {
   nombre: string;
@@ -36,9 +38,12 @@ export const CitizenMailbox: React.FC = () => {
     mensaje: ''
   });
 
+  // Consentimiento explícito sin casilla premarcada (Puntos 1, 5, 8 y 14 - Ley 1581 de 2012)
+  const [acceptConsent, setAcceptConsent] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [dataDeletedBanner, setDataDeletedBanner] = useState(false);
 
   const selectedComuna = COMUNAS_IBAGUE.find(c => String(c.number) === form.comunaId) || COMUNAS_IBAGUE[0];
 
@@ -73,18 +78,25 @@ export const CitizenMailbox: React.FC = () => {
       setError('Por favor describe tu problemática o propuesta con al menos 10 caracteres.');
       return;
     }
+    if (!acceptConsent) {
+      setError('Debes confirmar que eres mayor de 18 años y aceptar la Política de Privacidad (Ley 1581 de 2012) y Términos de Uso.');
+      return;
+    }
 
     setError(null);
     setSubmitted(true);
 
     try {
-      const existing = JSON.parse(localStorage.getItem('jp_reports') || '[]');
-      existing.unshift({
-        ...form,
-        comunaNombre: selectedComuna.name,
-        date: new Date().toLocaleDateString('es-CO')
-      });
-      localStorage.setItem('jp_reports', JSON.stringify(existing.slice(0, 10)));
+      const cookieChoice = localStorage.getItem('jp_cookie_consent');
+      if (cookieChoice !== 'essential') {
+        const existing = JSON.parse(localStorage.getItem('jp_reports') || '[]');
+        existing.unshift({
+          ...form,
+          comunaNombre: selectedComuna.name,
+          date: new Date().toLocaleDateString('es-CO')
+        });
+        localStorage.setItem('jp_reports', JSON.stringify(existing.slice(0, 10)));
+      }
     } catch {
       // storage quota or private browsing
     }
@@ -314,6 +326,39 @@ export const CitizenMailbox: React.FC = () => {
                   />
                 </div>
 
+                {/* Casilla de Consentimiento Explícito y Mayoría de Edad (Puntos 1, 5, 8 y 14 - Sin premarcar) */}
+                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                  <div className="flex items-start gap-2.5">
+                    <input
+                      id="buzon-consent"
+                      type="checkbox"
+                      checked={acceptConsent}
+                      onChange={(e) => setAcceptConsent(e.target.checked)}
+                      className="mt-1 h-4 w-4 rounded border-slate-300 text-red-700 focus:ring-red-600 cursor-pointer shrink-0"
+                      required
+                    />
+                    <label htmlFor="buzon-consent" className="text-xs text-slate-700 leading-relaxed cursor-pointer">
+                      Declaro que soy <strong>mayor de 18 años</strong> y autorizo de manera libre, previa, expresa e informada el tratamiento de mis datos personales conforme a la <strong>Ley 1581 de 2012 (Habeas Data)</strong>, aceptando la{' '}
+                      <button
+                        type="button"
+                        onClick={() => openLegalModal('privacidad')}
+                        className="text-red-700 hover:text-red-800 font-extrabold underline"
+                      >
+                        Política de Privacidad
+                      </button>{' '}
+                      y los{' '}
+                      <button
+                        type="button"
+                        onClick={() => openLegalModal('terminos')}
+                        className="text-red-700 hover:text-red-800 font-extrabold underline"
+                      >
+                        Términos y Condiciones
+                      </button>
+                      . *
+                    </label>
+                  </div>
+                </div>
+
                 {/* Botón de Envío */}
                 <button
                   type="submit"
@@ -322,6 +367,38 @@ export const CitizenMailbox: React.FC = () => {
                   <Send className="w-5 h-5" />
                   <span>Radicar en Buzón & Enviar por WhatsApp</span>
                 </button>
+
+                {/* Botón Directo para Borrar Mis Datos (Punto 3 - Derecho de Supresión Art. 8 Ley 1581/2012) */}
+                <div className="pt-2 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500">
+                  <span>¿Deseas eliminar los reportes guardados en tu navegador o darte de baja?</span>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        clearAllLocalUserData();
+                        setDataDeletedBanner(true);
+                        setTimeout(() => setDataDeletedBanner(false), 4000);
+                      }}
+                      className="inline-flex items-center gap-1 font-extrabold text-red-700 hover:text-red-800 underline"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Borrar mis datos locales</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => openLegalModal('borrar-datos')}
+                      className="font-bold text-slate-700 hover:text-slate-900 underline"
+                    >
+                      Centro Habeas Data
+                    </button>
+                  </div>
+                </div>
+
+                {dataDeletedBanner && (
+                  <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold text-center">
+                    ✓ Se eliminaron todos tus datos locales de este navegador.
+                  </div>
+                )}
 
               </form>
             )}

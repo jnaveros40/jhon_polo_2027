@@ -444,6 +444,9 @@ export const PillarsSection: React.FC = () => {
                 {STRATEGIC_MATRIX.map((row) => (
                   <tr
                     key={row.ejeNumber}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`Ver detalle del ${row.ejeTematico}`}
                     onClick={() => {
                       const targetPillar = PROGRAMMATIC_PILLARS.find(p => p.number === row.ejeNumber);
                       if (targetPillar) {
@@ -452,7 +455,18 @@ export const PillarsSection: React.FC = () => {
                         document.getElementById('propuestas')?.scrollIntoView({ behavior: 'smooth' });
                       }
                     }}
-                    className="hover:bg-amber-50/50 transition-colors cursor-pointer"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        const targetPillar = PROGRAMMATIC_PILLARS.find(p => p.number === row.ejeNumber);
+                        if (targetPillar) {
+                          setActivePillarId(targetPillar.id);
+                          setShowAllPillars(false);
+                          document.getElementById('propuestas')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }
+                    }}
+                    className="hover:bg-amber-50/50 focus:bg-amber-50 transition-colors cursor-pointer"
                   >
                     <td className="py-4 px-4 sm:px-6 font-display font-bold text-slate-900 whitespace-nowrap">
                       {row.ejeTematico}

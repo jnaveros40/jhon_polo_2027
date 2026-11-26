@@ -78,7 +78,16 @@ export const CaballoLiberal: React.FC<CaballoLiberalProps> = ({
   return (
     <div
       onClick={handleInteraction}
-      className={`inline-flex flex-col items-center select-none ${
+      onKeyDown={(e) => {
+        if (interactive && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          handleInteraction();
+        }
+      }}
+      role={interactive ? 'button' : undefined}
+      tabIndex={interactive ? 0 : undefined}
+      aria-label={interactive ? 'Animar sello del Caballo Galopando con Bandera de Ibagué' : undefined}
+      className={`inline-flex flex-col items-center select-none rounded-full ${
         interactive ? 'cursor-pointer group' : ''
       } ${className}`}
       title="Caballo Animado Galopando con Bandera en Movimiento - John Polo Concejo 2027"

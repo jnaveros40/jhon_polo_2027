@@ -33,14 +33,15 @@ export const HeroSection: React.FC = () => {
               </span>
 
               {/* Badge Oficial con el Caballo Galopando y la Bandera de Ibagué */}
-              <div
+              <button
+                type="button"
                 onClick={() => setPhotoVariant('caballo')}
                 className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black bg-white text-red-700 border-2 border-red-600/50 shadow-xs hover:border-red-600 hover:bg-red-50 transition-all cursor-pointer group"
                 title="Sello Animado: Caballo Galopando con la Bandera de Ibagué"
               >
                 <CaballoLiberal size="xs" variant="sello" interactive={false} />
                 <span>Partido Liberal • Ibagué</span>
-              </div>
+              </button>
 
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
                 <MapPin className="w-3.5 h-3.5 text-emerald-700" />
@@ -228,8 +229,10 @@ export const HeroSection: React.FC = () => {
                   </div>
 
                   {/* Sello Circular con la Bandera de Ibagué y Caballo Galopando Flotante */}
-                  <div
+                  <button
+                    type="button"
                     onClick={() => setPhotoVariant(photoVariant === 'caballo' ? 'creer' : 'caballo')}
+                    aria-label="Alternar vista del sello animado con la bandera de Ibagué"
                     className="absolute top-12 right-3 z-10 bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-xl border-2 border-yellow-400 flex flex-col items-center gap-1 group cursor-pointer hover:scale-105 transition-transform"
                     title="Sello Animado con la Bandera de Ibagué y Caballo Galopando"
                   >
@@ -241,7 +244,7 @@ export const HeroSection: React.FC = () => {
                     <span className="text-[9px] font-black uppercase text-red-700 leading-none text-center px-1">
                       Liberal • Ibagué
                     </span>
-                  </div>
+                  </button>
 
                   {/* Resumen inferior sobre la imagen */}
                   <div className="absolute bottom-3 left-3 right-3 p-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-white/60 shadow-lg text-slate-900">
