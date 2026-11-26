@@ -7,7 +7,8 @@ import {
   MessageCircle,
   Trash2,
   AlertTriangle,
-  HelpCircle
+  HelpCircle,
+  Loader2
 } from 'lucide-react';
 import {
   CAMPAIGN_INFO,
@@ -31,7 +32,7 @@ const INITIAL_AI_MESSAGE: ChatMessage = {
   id: 'welcome-ai',
   sender: 'ai',
   text:
-    '¡Hola! 🤖 Soy el **Asistente de Inteligencia Artificial** de la campaña de **John Fredy Polo Campos («El Gerente Campesino»)** al Concejo de Ibagué 2027–2030. Mis respuestas son generadas automáticamente por IA con base en el Documento Maestro de los 7 Ejes Estratégicos. ¿Sobre qué propuesta, comuna o vereda quieres preguntar?',
+    '¡Hola! 🤖 Soy el **Asistente de Inteligencia Artificial** de la campaña de **John Fredy Polo Campos («El Gerente Campesino»)** al Concejo de Ibagué 2027–2030.\n\nMis respuestas son generadas automáticamente por IA con base en el **Documento Maestro de los 7 Ejes Estratégicos**. ¿Sobre qué propuesta, comuna o vereda quieres preguntar?',
   timestamp: 'Ahora'
 };
 
@@ -45,13 +46,81 @@ const QUICK_QUESTIONS = [
   '¿Qué obra hay para mi Comuna?'
 ];
 
+/**
+ * Convierte marcadores **negrita** y *cursiva* en nodos React reales (<strong> y <em>)
+ * y formatea listas con viñetas para que nunca se vean asteriscos crudos en el chat.
+ */
+function renderInlineFormatting(line: string, isUser: boolean): React.ReactNode[] {
+  // Primero procesamos bloques **negrita** y *cursiva*
+  const tokens = line.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
+  return tokens.map((token, idx) => {
+    if (token.startsWith('**') && token.endsWith('**') && token.length > 4) {
+      const content = token.slice(2, -2);
+      return (
+        <strong
+          key={idx}
+          className={isUser ? 'font-extrabold text-white' : 'font-extrabold text-slate-950'}
+        >
+          {content}
+        </strong>
+      );
+    }
+    if (token.startsWith('*') && token.endsWith('*') && token.length > 2) {
+      const content = token.slice(1, -1);
+      return (
+        <em
+          key={idx}
+          className={isUser ? 'italic text-red-100' : 'italic text-slate-600'}
+        >
+          {content}
+        </em>
+      );
+    }
+    // Limpiar cualquier asterisco suelto remanente
+    return <React.Fragment key={idx}>{token.replace(/\*/g, '')}</React.Fragment>;
+  });
+}
+
+function renderFormattedMessage(text: string, isUser: boolean): React.ReactNode {
+  const lines = text.split('\n');
+  return (
+    <div className="space-y-1.5">
+      {lines.map((rawLine, idx) => {
+        const line = rawLine.trim();
+        if (!line) {
+          return <div key={idx} className="h-1" />;
+        }
+
+        // Detectar viñetas "• " o numeración "1. ", "2. "
+        const bulletMatch = line.match(/^(•|\d+\.)\s+(.*)$/);
+        if (bulletMatch && !isUser) {
+          const marker = bulletMatch[1];
+          const rest = bulletMatch[2];
+          return (
+            <div key={idx} className="flex items-start gap-1.5 pl-1">
+              <span className="font-extrabold text-red-700 shrink-0">{marker}</span>
+              <span className="flex-1">{renderInlineFormatting(rest, isUser)}</span>
+            </div>
+          );
+        }
+
+        return (
+          <p key={idx} className="leading-relaxed">
+            {renderInlineFormatting(line, isUser)}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 function generateGroundedAIResponse(query: string): string {
   const q = query
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 
-  // 1. Check if asking about a specific Comuna (e.g., "comuna 1", "comuna 8", "boqueron", "salado", "calambeo")
+  // 1. Consulta por Comuna específica (ej. "comuna 1", "comuna 8", "boqueron", "salado", "calambeo")
   const comunaMatch = q.match(/comuna\s*(\d{1,2})/);
   if (comunaMatch) {
     const num = parseInt(comunaMatch[1], 10);
@@ -61,7 +130,7 @@ function generateGroundedAIResponse(query: string): string {
         `📍 **${found.name}** (Barrios: ${found.barriosPrincipales.join(', ')}):\n` +
         `• **Urgencia diagnosticada:** ${found.urgenciaPrincipal}\n` +
         `• **Proyecto Estratégico 2027–2030:** ${found.proyectoEstrategico2027}\n\n` +
-        `*(Respuesta generada por Asistente IA • Fuente: Documento Maestro 2027–2030).*`
+        `*Fuente: Documento Maestro 2027–2030 de John Polo.*`
       );
     }
   }
@@ -80,12 +149,12 @@ function generateGroundedAIResponse(query: string): string {
         `📍 Para tu sector en **${c.name}** (${c.barriosPrincipales.join(', ')}):\n` +
         `• **Diagnóstico:** ${c.urgenciaPrincipal}\n` +
         `• **Compromiso en el Concejo 2027–2030:** ${c.proyectoEstrategico2027}\n\n` +
-        `*(Respuesta generada por Asistente IA • Fuente: Documento Maestro 2027–2030).*`
+        `*Fuente: Documento Maestro 2027–2030 de John Polo.*`
       );
     }
   }
 
-  // 2. Who is John Polo / El Gerente Campesino
+  // 2. ¿Quién es John Polo / El Gerente Campesino?
   if (
     q.includes('quien es') ||
     q.includes('john polo') ||
@@ -99,8 +168,7 @@ function generateGroundedAIResponse(query: string): string {
       `👤 **¿Quién es John Fredy Polo Campos («John Polo»)?**\n` +
       `Es líder territorial, conocido como **«El Gerente Campesino»**, candidato al **Concejo de Ibagué 2027–2030** con el aval del **Partido Liberal Colombiano**.\n` +
       `• **Su visión:** Une el orgullo por nuestras raíces campesinas (17 corregimientos y 144 veredas) con rigor técnico, gerencia pública y fundamentos de Manfred Max-Neef, Amartya Sen y Mariana Mazzucato.\n` +
-      `• **Su lema:** *«¡Ibagué merece sonar más fuerte! Es hora de creer»*.\n\n` +
-      `*(Respuesta generada por Asistente IA).*`
+      `• **Su lema:** *«¡Ibagué merece sonar más fuerte! Es hora de creer»*.`
     );
   }
 
@@ -111,10 +179,9 @@ function generateGroundedAIResponse(query: string): string {
       `💧 **${p2.title}:**\n` +
       `• **Problema:** ${p2.problematicaCentral}\n` +
       `• **Solución de John Polo desde el Concejo:**\n` +
-      `  1. **Meta vinculante de 30 km/año** de renovación hidrosanitaria (120 km en el cuatrienio) para recuperar +$8.000 millones/año en agua potable.\n` +
-      `  2. **Telemetría digital y válvulas matrices automatizadas** auditables en línea para garantizar presión y continuidad 24/7.\n` +
-      `  3. **Acuerdo de Sincronía Hidráulica:** prohibido pavimentar una vía sin certificar antes la red subterránea.\n\n` +
-      `*(Respuesta generada por Asistente IA).*`
+      `1. **Meta vinculante de 30 km/año** de renovación hidrosanitaria (120 km en el cuatrienio) para recuperar +$8.000 millones/año en agua potable.\n` +
+      `2. **Telemetría digital y válvulas matrices automatizadas** auditables en línea para garantizar presión y continuidad 24/7.\n` +
+      `3. **Acuerdo de Sincronía Hidráulica:** prohibido pavimentar una vía sin certificar antes la red subterránea.`
     );
   }
 
@@ -134,8 +201,7 @@ function generateGroundedAIResponse(query: string): string {
       `🌾 **Ejes 1 y 5 — Campo, 144 Veredas, Acopio Calle 19 y Plazas:**\n` +
       `1. **50 km/año de vías terciarias** convenidas directamente con las Juntas de Acción Comunal (JAC) bajo el esquema 80-10-10.\n` +
       `2. **Central de Acopio y Red de Frío en el antiguo Carrefour de la Calle 19:** Descongestiona la Cra. 4ª y articula las 5 plazas. Los mayoristas participan como socios logísticos con voz técnica pero sin voto para proteger la compra directa (Ley 2046) a nuestras 13.000 familias campesinas.\n` +
-      `3. **Plaza de la 28 (Modelo Concordia) y Biofábrica Municipal:** Cocinas campesinas modernas en el 2º piso de la 28 y conversión del Vivero Municipal en Biofábrica que procesa 15-20 ton/día de residuos orgánicos.\n\n` +
-      `*(Respuesta generada por Asistente IA).*`
+      `3. **Plaza de la 28 (Modelo Concordia) y Biofábrica Municipal:** Cocinas campesinas modernas en el 2º piso de la 28 y conversión del Vivero Municipal en Biofábrica que procesa 15-20 ton/día de residuos orgánicos.`
     );
   }
 
@@ -151,11 +217,10 @@ function generateGroundedAIResponse(query: string): string {
   ) {
     return (
       `🚡 **Eje 6 — Desembotellamiento Vial, SETP y 2 Cables Aéreos:**\n` +
-      `• **Para los +310.000 vehículos en Ibagué:**\n` +
-      `  1. **Caja única del SETP + 2 Líneas de Cable Aéreo con tarifa integrada:** Línea 1 Sur-Occidente (Boquerón – Miramar – Jazmín – Ricaurte – Centro) y Línea 2 Noroccidente (Centro – Clarita Botero – Ancón – La Aurora en Comuna 2).\n` +
-      `  2. **Grandes Obras Viales:** Viaducto/Puente en la Glorieta de Mirolindo conectado a la Variante Boquerón, Corredor Calle 103, Av. Carrera 13 y Doble Calzada U. Cooperativa–San Bernardo.\n` +
-      `  3. **Incentivos sin garrote a ~60.000 vehículos foráneos** para que radiquen su matrícula en Ibagué (+$10.000M a $14.000M/año para malla vial).\n\n` +
-      `*(Respuesta generada por Asistente IA).*`
+      `Para los **+310.000 vehículos** en Ibagué:\n` +
+      `1. **Caja única del SETP + 2 Líneas de Cable Aéreo con tarifa integrada:** Línea 1 Sur-Occidente (Boquerón – Miramar – Jazmín – Ricaurte – Centro) y Línea 2 Noroccidente (Centro – Clarita Botero – Ancón – La Aurora en Comuna 2).\n` +
+      `2. **Grandes Obras Viales:** Viaducto/Puente en la Glorieta de Mirolindo conectado a la Variante Boquerón, Corredor Calle 103, Av. Carrera 13 y Doble Calzada U. Cooperativa–San Bernardo.\n` +
+      `3. **Incentivos sin garrote a ~60.000 vehículos foráneos** para que radiquen su matrícula en Ibagué (+$10.000M a $14.000M/año para malla vial).`
     );
   }
 
@@ -172,10 +237,9 @@ function generateGroundedAIResponse(query: string): string {
   ) {
     return (
       `📊 **Ingeniería Financiera 80-10-10 y Empleo Joven (Sin subir Predial ni ICA):**\n` +
-      `• Con una deuda municipal de **${FINANCIAL_ENGINEERING.currentDebtAlert}**, John Polo propone financiar el desarrollo sin endeudar más a Ibagué:\n` +
-      `  1. **Esquema 80-10-10:** 80% Cooperación Internacional no reembolsable (BID, UE, Fondos Verdes, CIDCA), 10% Cofinanciación Nacional y 10% Contrapartida Local eficiente.\n` +
-      `  2. **Reingeniería 75/25 en INFIBAGUÉ:** Sobre el recaudo de $55.000M–$60.000M de Alumbrado Público, destinar 75% a inversión productiva y convertir a INFIBAGUÉ en **Banca de Desarrollo Juvenil** (capital semilla y primer empleo para egresados del SENA y universidades).\n\n` +
-      `*(Respuesta generada por Asistente IA).*`
+      `Con una deuda municipal de **${FINANCIAL_ENGINEERING.currentDebtAlert}**, John Polo propone financiar el desarrollo sin endeudar más a Ibagué:\n` +
+      `1. **Esquema 80-10-10:** 80% Cooperación Internacional no reembolsable (BID, UE, Fondos Verdes, CIDCA), 10% Cofinanciación Nacional y 10% Contrapartida Local eficiente.\n` +
+      `2. **Reingeniería 75/25 en INFIBAGUÉ:** Sobre el recaudo de $55.000M–$60.000M de Alumbrado Público, destinar 75% a inversión productiva y convertir a INFIBAGUÉ en **Banca de Desarrollo Juvenil** (capital semilla y primer empleo para egresados del SENA y universidades).`
     );
   }
 
@@ -184,8 +248,7 @@ function generateGroundedAIResponse(query: string): string {
     return (
       `🛡️ **Eje 7 — Seguridad Cívica, Plaza de la 21 y Entornos Seguros:**\n` +
       `1. **Recuperación Integral de la Plaza de la 21 y antigua 'Calle del Bronx':** Iluminación LED al 100%, cámaras de reconocimiento facial, gestores de convivencia y traslado del descargue pesado a la Calle 19.\n` +
-      `2. **Plan de Choque contra el Microtráfico en las 13 Comunas:** Recuperación de polideportivos con luz LED, escuelas deportivas y culturales nocturnas y oportunidades de empleo joven con INFIBAGUÉ.\n\n` +
-      `*(Respuesta generada por Asistente IA).*`
+      `2. **Plan de Choque contra el Microtráfico en las 13 Comunas:** Recuperación de polideportivos con luz LED, escuelas deportivas y culturales nocturnas y oportunidades de empleo joven con INFIBAGUÉ.`
     );
   }
 
@@ -194,15 +257,14 @@ function generateGroundedAIResponse(query: string): string {
     return (
       `⚖️ **Fundamento Teórico y Competencia Legal en el Concejo (Art. 313 C.P. y Ley 136/1994):**\n` +
       `• **3 Pilares Económicos:** ${THEORETICAL_FOUNDATIONS.map((t) => `${t.author} (${t.title})`).join(' • ')}.\n` +
-      `• **3 Funciones desde el Concejo:** ${COUNCILOR_COMPETENCES.map((c) => c.title).join(', ')}.\n\n` +
-      `*(Respuesta generada por Asistente IA).*`
+      `• **3 Funciones desde el Concejo:** ${COUNCILOR_COMPETENCES.map((c) => c.title).join(', ')}.`
     );
   }
 
-  // 9. General summary of all 7 Axes
+  // 9. Resumen general de los 7 Ejes
   return (
     `🏛️ **Los 7 Ejes Estratégicos de John Polo al Concejo de Ibagué 2027–2030:**\n` +
-    PROGRAMMATIC_PILLARS.map((p) => `**${p.number}.** ${p.shortTitle.replace(/^\d+\.\s*/, '')}: ${p.tagline}`).join('\n') +
+    PROGRAMMATIC_PILLARS.map((p) => `${p.number}. **${p.shortTitle.replace(/^\d+\.\s*/, '')}:** ${p.tagline}`).join('\n') +
     `\n\n💡 *Pregúntame por cualquier eje (ej. "Agua e IBAL", "Campo y Calle 19", "Cable Aéreo", "Esquema 80-10-10") o escribe el número de tu Comuna (ej. "Comuna 8").*`
   );
 }
@@ -211,7 +273,9 @@ export const JohnPoloAIChat: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_AI_MESSAGE]);
+  const [isThinking, setIsThinking] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const thinkingTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     try {
@@ -228,14 +292,19 @@ export const JohnPoloAIChat: React.FC = () => {
 
     const handleCleared = () => setMessages([INITIAL_AI_MESSAGE]);
     window.addEventListener('jp-user-data-cleared', handleCleared);
-    return () => window.removeEventListener('jp-user-data-cleared', handleCleared);
+    return () => {
+      window.removeEventListener('jp-user-data-cleared', handleCleared);
+      if (thinkingTimeoutRef.current) {
+        window.clearTimeout(thinkingTimeoutRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages, isOpen]);
+  }, [messages, isThinking, isOpen]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -260,31 +329,49 @@ export const JohnPoloAIChat: React.FC = () => {
 
   const handleSend = (customQuery?: string) => {
     const q = (customQuery ?? input).trim();
-    if (!q) return;
+    if (!q || isThinking) return;
 
+    const nowTime = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
       sender: 'user',
       text: q,
-      timestamp: new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })
+      timestamp: nowTime
     };
 
-    const aiMsg: ChatMessage = {
-      id: `ai-${Date.now() + 1}`,
-      sender: 'ai',
-      text: generateGroundedAIResponse(q),
-      timestamp: new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })
-    };
-
-    const updated = [...messages, userMsg, aiMsg];
-    setMessages(updated);
-    saveHistoryIfAllowed(updated);
+    const withUser = [...messages, userMsg];
+    setMessages(withUser);
+    saveHistoryIfAllowed(withUser);
     if (!customQuery) {
       setInput('');
     }
+
+    // Activar estado "pensando..." con un delay natural (1.1s a 1.5s) antes de entregar la respuesta
+    setIsThinking(true);
+    const delayMs = 1150 + Math.floor(Math.random() * 350);
+
+    thinkingTimeoutRef.current = window.setTimeout(() => {
+      const replyTime = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+      const aiMsg: ChatMessage = {
+        id: `ai-${Date.now() + 1}`,
+        sender: 'ai',
+        text: generateGroundedAIResponse(q),
+        timestamp: replyTime
+      };
+      setMessages((prev) => {
+        const updated = [...prev, aiMsg];
+        saveHistoryIfAllowed(updated);
+        return updated;
+      });
+      setIsThinking(false);
+    }, delayMs);
   };
 
   const handleClearChat = () => {
+    if (thinkingTimeoutRef.current) {
+      window.clearTimeout(thinkingTimeoutRef.current);
+    }
+    setIsThinking(false);
     try {
       localStorage.removeItem('jp_chat_history');
     } catch {
@@ -353,7 +440,7 @@ export const JohnPoloAIChat: React.FC = () => {
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-300">
-                  Entrenado con el Documento Maestro de los 7 Ejes
+                  {isThinking ? 'Analizando el Documento Maestro...' : 'Entrenado con el Documento Maestro de los 7 Ejes'}
                 </p>
               </div>
             </div>
@@ -401,29 +488,50 @@ export const JohnPoloAIChat: React.FC = () => {
             className="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50 max-h-[340px]"
             aria-live="polite"
           >
-            {messages.map((m) => (
-              <div
-                key={m.id}
-                className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}
-              >
+            {messages.map((m) => {
+              const isUser = m.sender === 'user';
+              return (
                 <div
-                  className={`max-w-[88%] rounded-2xl p-3.5 text-xs leading-relaxed shadow-xs whitespace-pre-line ${
-                    m.sender === 'user'
-                      ? 'bg-red-700 text-white rounded-br-xs font-medium'
-                      : 'bg-white text-slate-800 border border-slate-200 rounded-bl-xs'
-                  }`}
+                  key={m.id}
+                  className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}
                 >
-                  {m.sender === 'ai' && (
-                    <div className="flex items-center gap-1 text-[10px] font-extrabold uppercase text-red-700 mb-1">
-                      <Bot className="w-3.5 h-3.5" />
-                      <span>Respuesta generada por IA</span>
-                    </div>
-                  )}
-                  <div>{m.text}</div>
+                  <div
+                    className={`max-w-[88%] rounded-2xl p-3.5 text-xs shadow-xs ${
+                      isUser
+                        ? 'bg-red-700 text-white rounded-br-xs font-medium'
+                        : 'bg-white text-slate-800 border border-slate-200 rounded-bl-xs'
+                    }`}
+                  >
+                    {!isUser && (
+                      <div className="flex items-center gap-1 text-[10px] font-extrabold uppercase text-red-700 mb-1.5 pb-1 border-b border-slate-100">
+                        <Bot className="w-3.5 h-3.5" />
+                        <span>Respuesta generada por IA</span>
+                      </div>
+                    )}
+                    {renderFormattedMessage(m.text, isUser)}
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-1 px-1">{m.timestamp}</span>
                 </div>
-                <span className="text-[10px] text-slate-400 mt-1 px-1">{m.timestamp}</span>
+              );
+            })}
+
+            {/* Indicador animado de "Pensando / Escribiendo..." */}
+            {isThinking && (
+              <div className="flex flex-col items-start animate-in fade-in duration-200">
+                <div className="bg-white text-slate-700 border border-slate-200 rounded-2xl rounded-bl-xs px-4 py-3 text-xs shadow-xs flex items-center gap-2.5">
+                  <Loader2 className="w-4 h-4 text-red-600 animate-spin shrink-0" />
+                  <span className="font-semibold text-slate-600">
+                    Consultando el Plan de los 7 Ejes...
+                  </span>
+                  <span className="inline-flex items-center gap-1 ml-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-bounce [animation-delay:-0.3s]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce [animation-delay:-0.15s]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-bounce" />
+                  </span>
+                </div>
               </div>
-            ))}
+            )}
+
             <div ref={messagesEndRef} />
           </div>
 
@@ -438,8 +546,9 @@ export const JohnPoloAIChat: React.FC = () => {
                 <button
                   key={qq}
                   type="button"
+                  disabled={isThinking}
                   onClick={() => handleSend(qq)}
-                  className="px-2.5 py-1 rounded-full bg-white hover:bg-red-50 text-slate-700 hover:text-red-700 border border-slate-300 text-[11px] font-bold whitespace-nowrap transition-colors shrink-0"
+                  className="px-2.5 py-1 rounded-full bg-white hover:bg-red-50 disabled:opacity-50 text-slate-700 hover:text-red-700 border border-slate-300 text-[11px] font-bold whitespace-nowrap transition-colors shrink-0"
                 >
                   {qq}
                 </button>
@@ -463,14 +572,16 @@ export const JohnPoloAIChat: React.FC = () => {
                 id="ai-chat-input"
                 type="text"
                 value={input}
+                disabled={isThinking}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ej: ¿Qué propone para el agua o la Comuna 8?"
-                className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-600"
+                placeholder={isThinking ? 'El asistente está pensando...' : 'Ej: ¿Qué propone para el agua o la Comuna 8?'}
+                className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50 disabled:opacity-60 text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-600"
               />
               <button
                 type="submit"
+                disabled={isThinking || !input.trim()}
                 aria-label="Enviar pregunta al asistente IA"
-                className="p-2.5 rounded-xl bg-red-700 hover:bg-red-800 text-white shadow-sm transition-colors"
+                className="p-2.5 rounded-xl bg-red-700 hover:bg-red-800 disabled:opacity-50 text-white shadow-sm transition-colors"
               >
                 <Send className="w-4 h-4" />
               </button>
